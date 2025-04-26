@@ -1852,17 +1852,73 @@ window.unicornplatform.openPopup(&quot;popup-01-57905&quot;)"
     }
 </style>
 
-
-
-
-
-
-
-
-
-
-
-
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the current URL path
+    const path = window.location.pathname;
+    
+    // Extract the category from URL like /categories/scientific-computing/
+    const categoryMatch = path.match(/\/categories\/([^\/]+)/);
+    
+    if (categoryMatch && categoryMatch[1]) {
+      const category = decodeURIComponent(categoryMatch[1]).replace(/-/g, ' ');
+      
+      // Get all directory items
+      const allItems = document.querySelectorAll('.directory-item-parent');
+      let hasVisibleItems = false;
+      
+      allItems.forEach(item => {
+        // Get the category from data attributes or inner text
+        const itemCategories = item.querySelector('.directory-01__text')?.textContent || '';
+        const itemFilters = item.hasAttribute('data-filters') ? 
+                           JSON.parse(item.getAttribute('data-filters')) : {};
+        const itemCategory = itemFilters.category || '';
+        
+        // Check if this item belongs to the selected category
+        const categoryLower = category.toLowerCase();
+        const belongsToCategory = itemCategory.toLowerCase().includes(categoryLower) || 
+                                 itemCategories.toLowerCase().includes(categoryLower);
+        
+        // Show/hide based on category
+        if (belongsToCategory) {
+          item.style.display = 'block';
+          hasVisibleItems = true;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      
+      // Update the title to reflect the current category
+      const titleElement = document.querySelector('.directory-01__heading');
+      if (titleElement) {
+        titleElement.textContent = `AI Python Libraries - ${category}`;
+      }
+      
+      // Update subtitle if present
+      const subtitleElement = document.querySelector('.directory-01__subtitle');
+      if (subtitleElement) {
+        subtitleElement.textContent = `Explore our curated list of Python libraries for ${category.toLowerCase()}`;
+      }
+      
+      // Show no results message if needed
+      const placeholderContainer = document.querySelector('.directory-01__not-found-placeholder-container');
+      if (placeholderContainer) {
+        placeholderContainer.style.display = hasVisibleItems ? 'none' : 'flex';
+      }
+    }
+    
+    // Update category buttons to use proper URLs
+    const tagButtons = document.querySelectorAll('.directory-01__tag-button');
+    tagButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const category = this.textContent.trim();
+        const formattedCategory = category.toLowerCase().replace(/\s+/g, '-');
+        window.location.href = `/categories/${formattedCategory}/`;
+      });
+    });
+  });
+  </script>
 
 </body>
 </html>
