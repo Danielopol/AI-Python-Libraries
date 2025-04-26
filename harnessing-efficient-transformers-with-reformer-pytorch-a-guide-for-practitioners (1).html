@@ -1,0 +1,1516 @@
+
+<!DOCTYPE html>
+<html class="style-black-1  custom-colors-enabled  custom-accent-color-bright  custom_fonts comps live_website unicorn-platform-website" lang="en">
+
+
+<head>
+  
+	<!-- This blog is running on Unicorn Platform. Generated at April 26, 2025, 8:52 AM-->
+  
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+    <link rel="stylesheet" href="https://static-cdn.unicornplatform.com/2025-04-24.610/css/main.css">
+  
+
+  
+    <script>
+      window.isJsDelayed = false;
+    </script>
+    <script src="https://static-cdn.unicornplatform.com/2025-04-24.610/js/main.js" defer></script>
+  
+
+  
+    <title>Harnessing Efficient Transformers with Reformer PyTorch: A Guide for Practitioners</title>
+    <meta name="twitter:title" content="Harnessing Efficient Transformers with Reformer PyTorch: A Guide for Practitioners" />
+  
+
+  
+    
+      <link href="https://fonts.googleapis.com/css?family=Barlow:700|Barlow:400,700&display=swap" rel="stylesheet"/><style>
+			.custom_fonts .custom-google-fonts-enabled * {
+				font-family: 'Barlow', Helvetica, sans-serif;
+			}
+			.custom_fonts .custom-google-fonts-enabled h1,
+			.custom_fonts .custom-google-fonts-enabled h2,
+			.custom_fonts .custom-google-fonts-enabled h3,
+			.custom_fonts .custom-google-fonts-enabled h4,
+			.custom_fonts .custom-google-fonts-enabled h5,
+			.custom_fonts .custom-google-fonts-enabled h6{
+				font-family: 'Barlow', Helvetica, serif;
+			}
+		</style>
+
+    
+  
+
+	
+		<link rel="icon" type="image/png" href="https://unicorn-images.b-cdn.net/7305b47a-20ca-4596-aad3-52f44e8aa871?optimizer=gif" sizes="16x16" />
+	
+  <meta property="og:type" content="website">
+
+  
+    <meta property="og:title" content="Harnessing Efficient Transformers with Reformer PyTorch: A Guide for Practitioners" />
+  
+
+	
+    <meta property="og:image" content="https://unicorn-images.b-cdn.net/a0255339-2899-47d4-b718-a560f3bf1cee?optimizer=gif"/>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://unicorn-images.b-cdn.net/a0255339-2899-47d4-b718-a560f3bf1cee?optimizer=gif">
+  
+
+  
+    <meta name="description" content="Transformers have revolutionized machine learning, powering breakthroughs in NLP, computer vision, and beyond. However, their computational and memory costs grow quadratically with sequence length, making them impractical for long-context tasks like document analysis or music generation. Enter the Reformer: a more efficient Transformer variant designed to tackle these limitations. In this post, we’ll explore the Reformer PyTorch library, a PyTorch implementation that democratizes access to th...">
+    <meta name="twitter:description" content="Transformers have revolutionized machine learning, powering breakthroughs in NLP, computer vision, and beyond. However, their computational and memory costs grow quadratically with sequence length, making them impractical for long-context tasks like document analysis or music generation. Enter the Reformer: a more efficient Transformer variant designed to tackle these limitations. In this post, we’ll explore the Reformer PyTorch library, a PyTorch implementation that democratizes access to th..." />
+    <meta property="og:description" content="Transformers have revolutionized machine learning, powering breakthroughs in NLP, computer vision, and beyond. However, their computational and memory costs grow quadratically with sequence length, making them impractical for long-context tasks like document analysis or music generation. Enter the Reformer: a more efficient Transformer variant designed to tackle these limitations. In this post, we’ll explore the Reformer PyTorch library, a PyTorch implementation that democratizes access to th..."/>
+  
+
+    
+    <link href="https://www.aipythonlibraries.com/blog/harnessing-efficient-transformers-with-reformer-pytorch-a-guide-for-practitioners/" rel="canonical"><meta name="twitter:url" content="https://www.aipythonlibraries.com/blog/harnessing-efficient-transformers-with-reformer-pytorch-a-guide-for-practitioners/"><meta property="og:url" content="https://www.aipythonlibraries.com/blog/harnessing-efficient-transformers-with-reformer-pytorch-a-guide-for-practitioners/">
+	
+  <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Harnessing Efficient Transformers with Reformer PyTorch: A Guide for Practitioners",
+  "image": [
+    "https://unicorn-images.b-cdn.net/a0255339-2899-47d4-b718-a560f3bf1cee?optimizer=gif"
+  ],
+  "datePublished": "2025-02-08T12:34:43.405412+00:00",
+  "dateModified": "2025-02-08T12:32:37.542397+00:00"
+}
+  </script>
+  
+    <script>
+      window.unicornEnv = "production"
+    </script>
+  
+    
+    
+    
+</head>
+<body class="custom-google-fonts-enabled comps " id="313536-61663-390760">
+
+  
+	
+
+
+
+
+
+
+
+	<nav 
+  id="uni-navigation-bar" 
+  class="js-nav nav-02  nav-02--sticky  nav-02--sticky--white  "
+  
+  >
+		<div class="container container--large">
+			<div class="nav-02__box">
+				<div class="nav-02__logo"><a aria-label="Home" class="nav-02__link" href="/" target="_blank">
+					
+            
+						<img 
+            
+              class="nav-02__logo_img" 
+              height="100"
+              alt="Company logo"
+              
+              
+                src="https://unicorn-images.b-cdn.net/bf4484c7-ad4a-4507-a9d1-e7a562eb1b4e?optimizer=gif"
+                srcset="https://unicorn-images.b-cdn.net/bf4484c7-ad4a-4507-a9d1-e7a562eb1b4e?optimizer=gif&amp;width=134&amp;height=100 134w,https://unicorn-images.b-cdn.net/bf4484c7-ad4a-4507-a9d1-e7a562eb1b4e?optimizer=gif&amp;width=268&amp;height=200 268w,https://unicorn-images.b-cdn.net/bf4484c7-ad4a-4507-a9d1-e7a562eb1b4e?optimizer=gif&amp;width=402&amp;height=300 402w,"
+                sizes="134px"
+              
+            />
+					
+					
+            
+              <span class="content-text nav-02__logo_text ">AI Python Libraries - A collection of powerful libraries for AI development in Python</span>
+            
+					
+				</a></div>
+				<div class="nav-02__links js-menu">
+					<div class="nav-02__list_wrapper  ">
+						<ul class="nav-02__list nav-02__list--desktop">
+                        
+                        
+                            
+
+
+    
+
+
+                        
+							<li class="nav-02__item">
+								
+	
+<div class="buttons-set"><ul class="buttons-set__list"><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--accent-outline " href="/about" target="_blank"    ><span class="button__text">About directory</span></a></li><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--accent-outline " href="/libraries" target="_blank"    ><span class="button__text">Libraries</span></a></li><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--accent-outline " href="/" target="_blank"    ><span class="button__text">Homepage</span></a></li><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--accent-outline " href="/blog" target="_blank"    ><span class="button__text">Blog</span></a></li></ul></div>
+
+							</li>
+						</ul>
+						<ul class="nav-02__list nav-02__list--mobile">
+                            
+                            
+                                
+
+
+    
+
+
+                            
+							<li class="nav-02__item">
+								
+	
+<div class="buttons-set"><ul class="buttons-set__list"><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--accent-outline " href="/about" target="_blank"    ><span class="button__text">About directory</span></a></li><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--accent-outline " href="/libraries" target="_blank"    ><span class="button__text">Libraries</span></a></li><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--accent-outline " href="/" target="_blank"    ><span class="button__text">Homepage</span></a></li><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--accent-outline " href="/blog" target="_blank"    ><span class="button__text">Blog</span></a></li></ul></div>
+
+							</li>
+						</ul>
+					</div>
+          
+            
+              
+                
+                  <div class="nav-02__burger">
+	<button class="burger burger--black js-open-menu" type="button" title="Open menu">
+		<div class="burger__box">
+			<div class="burger__inner"></div>
+		</div>
+	</button>
+</div>
+
+                
+              
+            
+          
+				</div>
+			</div>
+		</div>
+	</nav>
+  
+    <style>
+      #uni-navigation-bar .button {
+    padding: 12px 20px 14px;
+    min-width: 120px;
+    min-height: 44px;
+    border-radius: 40px;
+    box-shadow: none;
+    border: 1px solid #E7E7E9;
+    color: #050318;
+    font-weight:500;
+ }
+
+#uni-navigation-bar .button__text {
+    vertical-align: middle;
+    font-size: 16px;
+    transition: opacity .2s ease,transform .2s ease;
+}
+
+#uni-navigation-bar .container--large {
+    max-width: 100%;
+}
+
+#uni-navigation-bar .container {
+    padding: 0 48px;
+    max-width: 100%;
+}
+@media (max-width: 1300px) {
+#uni-navigation-bar .container {
+    padding: 0 15px;
+    }
+}
+
+html, .editor__templates_nav, .editor__components {
+  --primary-5: color-mix(in srgb, var(--primary), #0000 95%);
+  --primary-10: color-mix(in srgb, var(--primary), #0000 90%);
+  --primary-20: color-mix(in srgb, var(--primary), #0000 80%);
+  --primary-50: color-mix(in srgb, var(--primary), #0000 50%);
+  --primary-80: color-mix(in srgb, var(--primary), #0000 20%);
+
+  --secondary-5: color-mix(in srgb, var(--secondary), #0000 95%);
+  --secondary-10: color-mix(in srgb, var(--secondary), #0000 90%);
+  --secondary-20: color-mix(in srgb, var(--secondary), #0000 80%);
+  --secondary-50: color-mix(in srgb, var(--secondary), #0000 50%);
+  --secondary-80: color-mix(in srgb, var(--secondary), #0000 20%);
+
+  --accent-5: color-mix(in srgb, var(--accent), #0000 95%);
+  --accent-10: color-mix(in srgb, var(--accent), #0000 90%);
+  --accent-20: color-mix(in srgb, var(--accent), #0000 80%);
+  --accent-50: color-mix(in srgb, var(--accent), #0000 50%);
+  --accent-80: color-mix(in srgb, var(--accent), #0000 20%);
+  --primary-dark5: color-mix(in srgb, var(--primary), black 5%);
+  --primary-dark10: color-mix(in srgb, var(--primary), black 10%);
+  --primary-dark20: color-mix(in srgb, var(--primary), black 20%);
+  --primary-dark50: color-mix(in srgb, var(--primary), black 50%);
+  --primary-dark80: color-mix(in srgb, var(--primary), black 80%);
+ --primary-dark90: color-mix(in srgb, var(--primary), black 90%);
+--secondary-dark5: color-mix(in srgb, var(--secondary), black 5%);
+--secondary-dark10: color-mix(in srgb, var(--secondary), black 10%);
+  --secondary-dark20: color-mix(in srgb, var(--secondary), black 20%);
+  --secondary-dark50: color-mix(in srgb, var(--secondary), black 50%);
+  --secondary-dark80: color-mix(in srgb, var(--secondary), black 80%);
+--secondary-dark90: color-mix(in srgb, var(--secondary), black 90%);
+--accent-dark5: color-mix(in srgb, var(--accent), black 5%);
+--accent-dark10: color-mix(in srgb, var(--accent), black 10%);
+  --accent-dark20: color-mix(in srgb, var(--accent), black 20%);
+  --accent-dark50: color-mix(in srgb, var(--accent), black 50%);
+  --accent-dark80: color-mix(in srgb, var(--accent), black 80%);
+--accent-dark90: color-mix(in srgb, var(--accent), black 90%);
+}
+    </style>
+  
+  
+
+
+
+
+	
+
+
+
+<div class="blog_post-01 bg-main">
+  <section class="overlay-post  read-more-zoom " id="js-overlay-list">
+    <div class="container container-p--large">
+    
+    
+    <h1 class="post-title">Harnessing Efficient Transformers with Reformer PyTorch: A Guide for Practitioners</h1>
+
+    <div class="date-modified color-secondary subtitle-text def-14">
+      
+        published on 08 February 2025
+      
+    </div>
+
+    
+      <div class="post-body content_box content_box--blog  content_box--blog-editorjs ">
+        
+        <p class="paragraph">Transformers have revolutionized machine learning, powering breakthroughs in NLP, computer vision, and beyond. However, their computational and memory costs grow quadratically with sequence length, making them impractical for long-context tasks like document analysis or music generation. Enter the&nbsp;Reformer: a more efficient Transformer variant designed to tackle these limitations. In this post, we’ll explore the&nbsp;Reformer PyTorch&nbsp;library, a PyTorch implementation that democratizes access to this powerful architecture.</p><h3>What is the Reformer?</h3><p class="paragraph">The Reformer, introduced in the 2020 paper&nbsp;<a target="_blank"  href="https://arxiv.org/abs/2001.04451" target="_blank">Reformer: The Efficient Transformer</a>, addresses two critical bottlenecks in standard Transformers:</p><ol><li>Memory Overhead: Traditional self-attention scales with&nbsp;O(N2)O(N2)&nbsp;for sequence length&nbsp;NN.</li><li>Model Depth: Storing activations for backpropagation in deep networks consumes significant memory.</li></ol><p class="paragraph">The Reformer leverages three innovations:</p><ul><li>Locality-Sensitive Hashing (LSH) Attention: Approximates self-attention using hashing, reducing complexity to&nbsp;O(Nlog⁡N)O(NlogN).</li><li>Reversible Layers: Allows activations to be reconstructed during backprop, slashing memory usage.</li><li>Chunked Feed-Forward Layers: Processes sequences in chunks to reduce peak memory.</li></ul><p class="paragraph">These optimizations enable the Reformer to handle sequences up to&nbsp;1 million tokens&nbsp;long, making it ideal for long-context tasks.</p><h3>Introducing Reformer PyTorch</h3><p class="paragraph">The&nbsp;<a target="_blank"  href="https://github.com/lucidrains/reformer-pytorch" target="_blank">Reformer PyTorch</a>&nbsp;library, developed by Phil Wang, provides a user-friendly PyTorch implementation. Its key features include:</p><ul><li>Easy integration&nbsp;with existing PyTorch workflows.</li><li>Pre-built modules&nbsp;for language modeling, classification, and generation.</li><li>Customizable parameters&nbsp;for LSH attention buckets, reversible layers, and more.</li></ul><h3>Installation</h3><p class="paragraph">Getting started is straightforward:</p><p class="paragraph">bashCopy</p><pre><code class="code-block">pip install reformer-pytorch  </code></pre><p class="paragraph">Ensure you have PyTorch (≥1.6) installed. For GPU support, install PyTorch with CUDA.</p><h3>Quickstart: Using Reformer PyTorch</h3><h4>1. Basic Usage</h4><p class="paragraph">pythonCopy</p><pre><code class="code-block">import torch  
+from reformer_pytorch import ReformerLM  
+
+# Initialize a Reformer model for language modeling  
+model = ReformerLM(  
+    num_tokens=20000,  # Vocabulary size  
+    dim=512,           # Embedding dimension  
+    depth=12,          # Number of layers  
+    max_seq_len=8192,  # Maximum sequence length  
+    causal=True,       # Autoregressive for generation  
+)  
+
+x = torch.randint(0, 20000, (1, 8192))  # Example input (batch_size, seq_len)  
+output = model(x)  # Shape: (1, 8192, 20000)  </code></pre><h4>2. Training a Language Model</h4><p class="paragraph">Here’s a snippet for training on the&nbsp;<a target="_blank"  href="https://www.cs.ox.ac.uk/activities/compdistl/ennemorized/enwik8.zip" target="_blank">Enwik8 dataset</a>:</p><p class="paragraph">pythonCopy</p><pre><code class="code-block">from torch import nn, optim  
+from reformer_pytorch import ReformerLM  
+from torch.utils.data import DataLoader  
+
+# Load dataset (simplified example)  
+train_loader = DataLoader(enwik8_dataset, batch_size=4, shuffle=True)  
+
+# Model with autoregressive wrapper  
+model = ReformerLM(  
+    num_tokens=256,  
+    dim=1024,  
+    depth=6,  
+    max_seq_len=4096,  
+    causal=True  
+).cuda()  
+
+# Training setup  
+optimizer = optim.Adam(model.parameters(), lr=1e-4)  
+criterion = nn.CrossEntropyLoss()  
+
+# Training loop  
+for epoch in range(10):  
+    model.train()  
+    for batch in train_loader:  
+        inputs = batch.cuda()  
+        optimizer.zero_grad()  
+        outputs = model(inputs)  
+        loss = criterion(outputs.view(-1, 256), inputs.view(-1))  
+        loss.backward()  
+        optimizer.step()  
+    print(f"Epoch {epoch}, Loss: {loss.item()}")  </code></pre><h3>Practical Applications</h3><p class="paragraph">The Reformer’s efficiency unlocks new possibilities:</p><ul><li>Long Document Processing: Summarize or translate entire books.</li><li>Music Generation: Model lengthy MIDI sequences.</li><li>Bioinformatics: Analyze DNA/protein sequences.</li><li>Time Series Forecasting: Handle high-resolution sensor data.</li></ul><h3>Benefits &amp; Considerations</h3><p class="paragraph">Pros:</p><ul><li>✅ Scales to&nbsp;extremely long sequences&nbsp;(64K+ tokens).</li><li>✅&nbsp;Memory-efficient&nbsp;training with reversible layers.</li><li>✅ Seamless PyTorch integration.</li></ul><p class="paragraph">Cons:</p><ul><li>❓ LSH attention may trade some accuracy for speed.</li><li>❓ Requires tuning (e.g., bucket size, number of hashes).</li></ul><h3>Conclusion</h3><p class="paragraph">The Reformer PyTorch library is a game-changer for tasks requiring long-context understanding. By combining cutting-edge research with PyTorch’s flexibility, it empowers practitioners to experiment without hardware constraints.</p><p class="paragraph">Ready to dive in?</p><ul><li>Check the&nbsp;<a href="https://github.com/lucidrains/reformer-pytorch" target="_blank">official GitHub repo</a>&nbsp;for advanced examples.</li><li>Explore the&nbsp;<a href="https://arxiv.org/abs/2001.04451" target="_blank">Paper</a>&nbsp;for theoretical insights.</li></ul><p class="paragraph">Whether you’re generating music or analyzing legal documents, the Reformer PyTorch library is a tool worth mastering. Happy coding! 🚀</p>
+      </div>
+    
+    </div>
+  </section>
+
+  
+  <section class="read-more container container-p--large" id="js-read-more">
+    <div class="read-more__header">
+      <h2 class="read-more__title">Read more</h2>
+      <a href="/blog/" class="read-more__home-link">
+        <i aria-label="icon: home" class="anticon anticon-home"><svg viewBox="64 64 896 896" data-icon="home" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false"><path d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z"></path></svg></i>
+      </a>
+    </div>
+
+    <div class="read-more__more-posts">
+      
+        
+        
+        
+
+<a target="_self" class="js-post-item post-item bg-medium-hover link" href="/blog/the-top-python-libraries-for-building-ai-agents-in-2025/">
+  <img 
+    
+      loading="lazy"
+    
+    class="js-post-item__img post-item__img " 
+    alt="Thumbnail for: The Top Python Libraries for Building AI Agents in 2025"
+
+    
+      src="https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif"
+      srcset="https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=270&amp;height=270 270w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=325&amp;height=325 325w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=375&amp;height=375 375w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=590&amp;height=590 590w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=224&amp;height=224 224w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=366&amp;height=366 366w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=540&amp;height=540 540w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=650&amp;height=650 650w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=750&amp;height=750 750w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=1024&amp;height=1024 1024w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=810&amp;height=810 810w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=975&amp;height=975 975w,https://unicorn-images.b-cdn.net/bf226863-9cfd-47ad-ab84-68896ceb8a54?optimizer=gif&amp;width=1024&amp;height=1024 1024w,"
+      sizes="(max-width: 320px) 270px,(max-width: 375px) 325px,(max-width: 425px) 375px,(max-width: 640px) 590px,(max-width: 768px) 224px,366px"
+    
+  >
+  <h3 class="js-post-item__title post-item__title">The Top Python Libraries for Building AI Agents in 2025</h3>
+</a>
+
+      
+        
+        
+        
+
+<a target="_self" class="js-post-item post-item bg-medium-hover link" href="/blog/opencv-and-deep-learning-building-real-time-ai-applications/">
+  <img 
+    
+      loading="lazy"
+    
+    class="js-post-item__img post-item__img  post-item__img-pattern " 
+    alt="Thumbnail for: OpenCV and Deep Learning: Building Real-Time AI Applications"
+
+    
+      src=""
+      
+      
+    
+  >
+  <h3 class="js-post-item__title post-item__title">OpenCV and Deep Learning: Building Real-Time AI Applications</h3>
+</a>
+
+      
+        
+        
+        
+
+<a target="_self" class="js-post-item post-item bg-medium-hover link" href="/blog/the-best-python-libraries-for-machine-learning-and-ai-features-applications/">
+  <img 
+    
+      loading="lazy"
+    
+    class="js-post-item__img post-item__img  post-item__img-pattern " 
+    alt="Thumbnail for: The Best Python Libraries for Machine Learning and AI: Features &amp; Applications"
+
+    
+      src=""
+      
+      
+    
+  >
+  <h3 class="js-post-item__title post-item__title">The Best Python Libraries for Machine Learning and AI: Features &amp; Applications</h3>
+</a>
+
+      
+    </div>
+  </section>
+  
+</div>
+
+
+
+
+	
+	
+	
+	
+	
+  
+  
+
+	<div 
+    class="popup-component js-custom-popup page-component__bg_image_box    bg-white-color   popup-component_no-image is-not-first-component"
+    id="popup-01-success_default"
+    
+    
+  >
+		<button class="popup-component__close-button js-close-custom-popup-button">
+			<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M20.0806 17.9986L30.6275 5.42673C30.8043 5.2178 30.6556 4.90039 30.3824 4.90039H27.1762C26.9873 4.90039 26.8065 4.98477 26.682 5.12941L17.9833 15.4995L9.28465 5.12941C9.16411 4.98477 8.98331 4.90039 8.79045 4.90039H5.5842C5.31099 4.90039 5.16233 5.2178 5.33911 5.42673L15.886 17.9986L5.33911 30.5705C5.29951 30.6171 5.2741 30.674 5.26591 30.7346C5.25771 30.7952 5.26708 30.8568 5.29288 30.9122C5.31869 30.9677 5.35985 31.0145 5.41149 31.0472C5.46313 31.0799 5.52307 31.0972 5.5842 31.0968H8.79045C8.97929 31.0968 9.16009 31.0124 9.28465 30.8678L17.9833 20.4977L26.682 30.8678C26.8025 31.0124 26.9833 31.0968 27.1762 31.0968H30.3824C30.6556 31.0968 30.8043 30.7794 30.6275 30.5705L20.0806 17.9986Z" fill="white"/>
+			</svg>				
+		</button>
+		<div class="popup-component__bg_image_box">
+			
+			
+			<div 
+          class="page-component__bg_overlay_box " 
+          style=""
+        >
+				
+			</div>
+			
+			<div class="page-component__wrapper" style="z-index: 14;padding-top: 1px;padding-bottom: 1px;">
+				
+
+
+
+    
+    
+    
+    
+    <div class="popup-01 graphics-image default-graphics-image">
+        <div class="container container--premid popup-01__container">
+            <div class="popup-01__left">
+                <div class="popup-01__content">
+                    
+                        <h2 class="title-text heading popup-01__heading">Submission Successful</h2>
+                    
+                    
+                        <p class="subtitle-text content_box popup-01__text">The form has been successfully submitted.</p>
+                    
+                    <div class="popup-01__cta-box">
+                        
+	
+<div class="buttons-set"><ul class="buttons-set__list"><li class="buttons-set__item"><a
+				 data-stripe-product-id="" data-stripe-mode="payment" data-successful-payment-url="" data-cancel-payment-url=""
+
+				 class="button button--black-bg " href="/" target="_blank"   onclick="event.preventDefault(); window.unicornplatform.closeAllPopups();"   ><span class="button__text">Back to site</span></a></li></ul></div>
+
+                    </div>
+                </div>
+            </div>
+            
+              
+            
+        </div>
+    </div>
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+  
+  
+
+	
+	
+	
+	
+	
+  
+  
+
+	<div 
+    class="popup-component js-custom-popup page-component__bg_image_box    bg-white-color   popup-component_no-image is-not-first-component"
+    id="popup-01-30058"
+    
+    
+  >
+		<button class="popup-component__close-button js-close-custom-popup-button">
+			<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M20.0806 17.9986L30.6275 5.42673C30.8043 5.2178 30.6556 4.90039 30.3824 4.90039H27.1762C26.9873 4.90039 26.8065 4.98477 26.682 5.12941L17.9833 15.4995L9.28465 5.12941C9.16411 4.98477 8.98331 4.90039 8.79045 4.90039H5.5842C5.31099 4.90039 5.16233 5.2178 5.33911 5.42673L15.886 17.9986L5.33911 30.5705C5.29951 30.6171 5.2741 30.674 5.26591 30.7346C5.25771 30.7952 5.26708 30.8568 5.29288 30.9122C5.31869 30.9677 5.35985 31.0145 5.41149 31.0472C5.46313 31.0799 5.52307 31.0972 5.5842 31.0968H8.79045C8.97929 31.0968 9.16009 31.0124 9.28465 30.8678L17.9833 20.4977L26.682 30.8678C26.8025 31.0124 26.9833 31.0968 27.1762 31.0968H30.3824C30.6556 31.0968 30.8043 30.7794 30.6275 30.5705L20.0806 17.9986Z" fill="white"/>
+			</svg>				
+		</button>
+		<div class="popup-component__bg_image_box">
+			
+			
+			<div 
+          class="page-component__bg_overlay_box " 
+          style=""
+        >
+				
+			</div>
+			
+			<div class="page-component__wrapper" style="z-index: 13;padding-top: 1px;padding-bottom: 1px;">
+				
+
+
+
+    
+    
+    
+    
+    <div class="popup-01 graphics-image default-graphics-image">
+        <div class="container container--premid popup-01__container">
+            <div class="popup-01__left">
+                <div class="popup-01__content">
+                    
+                        <h2 class="title-text heading popup-01__heading">Please fill the form below</h2>
+                    
+                    
+                        <p class="subtitle-text content_box popup-01__text"><p>We will contact you by the email</p>
+</p>
+                    
+                    <div class="popup-01__cta-box">
+                        
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<form class="form  form--centered-button  js-no-integration-form" 
+
+  
+    action="" 
+    method="GET" 
+  
+
+  data-sheet-id="" 
+  
+  
+    data-success-code="window.unicornplatform.closeAllPopups();
+window.unicornplatform.openPopup(&quot;popup-01-57905&quot;)"
+  
+
+	
+  
+	
+    data-preserve-params="true"
+  
+
+	
+	>
+	
+		<div class="form__inputs">
+			
+        
+				
+					<div class="form__input    ">
+						<div class="form__input__label_box">
+							<label class="form__input__label " for="EMAIL-313536-0">
+								Enter your email:
+							</label>
+						</div>
+						<input 
+              class="text-input js-form-input   " 
+               
+              type="email" 
+              id="EMAIL-313536-0" 
+              name="EMAIL" 
+              required 
+              placeholder="your@email.com"
+              
+              
+              
+            />
+					</div>
+				
+			
+        
+				
+					<div class="form__input    ">
+						<div class="form__input__label_box">
+							<label class="form__input__label " for="FNAME-313536-1">
+								Enter your name:
+							</label>
+						</div>
+						<input 
+              class="text-input js-form-input   " 
+               
+              type="text" 
+              id="FNAME-313536-1" 
+              name="FNAME" 
+               
+              placeholder="Your name"
+              
+              
+              
+            />
+					</div>
+				
+			
+        
+				
+					<div class="form__input  form__input--full   ">
+						<div class="form__input__label_box">
+							<label class="form__input__label " for="WEBSITE-313536-2">
+								Enter your GPT URL:
+							</label>
+						</div>
+						<input 
+              class="text-input js-form-input   " 
+               
+              type="url" 
+              id="WEBSITE-313536-2" 
+              name="WEBSITE" 
+               
+              placeholder="chat.openai.com/g/g..."
+              
+              
+              
+            />
+					</div>
+				
+			
+        
+				
+					<div class="form__input  form__input--full   ">
+						<div class="form__input__label_box">
+							<label class="form__input__label " for="SELECT-313536-3">
+								Choose the plan
+							</label>
+						</div>
+						<select  class="text-input    " name="SELECT" id="SELECT-313536-3">
+							
+							
+								
+									<option value="Boost for $299">Boost for $299</option>
+								
+							
+								
+									<option value="Advanced for $999">Advanced for $999</option>
+								
+							
+								
+									<option value="All in for $2999">All in for $2999</option>
+								
+							
+								
+									<option value="Don&#39;t know">Don&#39;t know</option>
+								
+							
+						</select>
+					</div>
+				
+			
+			
+				<div class="form__button  form__button--full ">
+					
+
+
+
+
+
+
+
+	<button class="button js-submit-button button--accent-bg " type="submit"   ><span class="button__text">Continue</span>
+		<div class="spinner"></div>
+		<div class="button__submit_success">
+			<div class="button__success_circle "></div>
+			<div><svg class="button__success_tick" width="13" height="13" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg"><path class="button__success_tick_path" stroke="#FFF" d="M0 8l5.119 3.873L11.709.381" fill="none" fill-rule="evenodd" stroke-linecap="square"/></svg></div>
+		</div><span class="icon"><svg viewBox="0 0 13 10" xmlns="http://www.w3.org/2000/svg"><path d="M12.823 4.164L8.954.182a.592.592 0 0 0-.854 0 .635.635 0 0 0 0 .88l2.836 2.92H.604A.614.614 0 0 0 0 4.604c0 .344.27.622.604.622h10.332L8.1 8.146a.635.635 0 0 0 0 .88.594.594 0 0 0 .854 0l3.869-3.982a.635.635 0 0 0 0-.88z" fill-rule="nonzero" fill="#00396B" class="fill-main"/></svg></span>
+	</button>
+
+
+				</div>
+			
+			<div class="form__messages_box">
+				<div class="form__messages">
+					
+					<div class="message message--error js-message js-error-message">
+						<div class="message__box">
+							<button class="message__close js-close-message" type="button"><img loading="lazy" class="message__close_icon" src="static/img/icons/corner-top--blue.svg"/></button>
+							<div class="message__body">
+								<div class="message__in">
+									<div class="message__bubble">
+										<div class="message__bubble_text"><b>Error.</b> Your form has not been submitted<img loading="lazy" class="emoji  " src="static/img/twemoji/1f914.svg" alt="Emoji"/>
+										</div>
+									</div>
+									<div class="message__bubble">
+										<div class="message__bubble_text">This is what the server says:
+											<div class="message__bubble_error js-error-message-text">There must be an @ at the beginning.</div>
+										</div>
+									</div>
+								</div>
+								<div class="message__out">
+									<div class="message__out_box">
+										<div class="message__bubble">
+											<div class="message__bubble_text message__bubble_text--out js-reaction-text">I will retry</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="message__reply_box">
+								<div class="message__reply_word">Reply</div>
+								<div class="message__options">
+									<div class="message__option">
+										<button class="button js-react-on-message button--ruby-bg " type="submit"><span class="button__text">Uh oh!</span>
+										</button>
+									</div>
+									<div class="message__option">
+										<button class="button js-react-on-message button--ruby-bg " type="submit"><span class="button__text">I will retry</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+        
+
+	</form>
+
+
+
+                    </div>
+                </div>
+            </div>
+            
+              
+            
+        </div>
+    </div>
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+  
+  
+
+	
+	
+	
+	
+	
+  
+  
+
+	<div 
+    class="popup-component js-custom-popup page-component__bg_image_box    bg-white-color   popup-component_no-image is-not-first-component"
+    id="popup-01-57905"
+    
+    
+  >
+		<button class="popup-component__close-button js-close-custom-popup-button">
+			<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M20.0806 17.9986L30.6275 5.42673C30.8043 5.2178 30.6556 4.90039 30.3824 4.90039H27.1762C26.9873 4.90039 26.8065 4.98477 26.682 5.12941L17.9833 15.4995L9.28465 5.12941C9.16411 4.98477 8.98331 4.90039 8.79045 4.90039H5.5842C5.31099 4.90039 5.16233 5.2178 5.33911 5.42673L15.886 17.9986L5.33911 30.5705C5.29951 30.6171 5.2741 30.674 5.26591 30.7346C5.25771 30.7952 5.26708 30.8568 5.29288 30.9122C5.31869 30.9677 5.35985 31.0145 5.41149 31.0472C5.46313 31.0799 5.52307 31.0972 5.5842 31.0968H8.79045C8.97929 31.0968 9.16009 31.0124 9.28465 30.8678L17.9833 20.4977L26.682 30.8678C26.8025 31.0124 26.9833 31.0968 27.1762 31.0968H30.3824C30.6556 31.0968 30.8043 30.7794 30.6275 30.5705L20.0806 17.9986Z" fill="white"/>
+			</svg>				
+		</button>
+		<div class="popup-component__bg_image_box">
+			
+			
+			<div 
+          class="page-component__bg_overlay_box " 
+          style=""
+        >
+				
+			</div>
+			
+			<div class="page-component__wrapper" style="z-index: 12;padding-top: 1px;padding-bottom: 1px;">
+				
+
+
+
+    
+    
+    
+    
+    <div class="popup-01 graphics-image default-graphics-image">
+        <div class="container container--premid popup-01__container">
+            <div class="popup-01__left">
+                <div class="popup-01__content">
+                    
+                        <h2 class="title-text heading popup-01__heading">Thanks</h2>
+                    
+                    
+                        <p class="subtitle-text content_box popup-01__text"><p>Our team will contact you soon!</p>
+</p>
+                    
+                    <div class="popup-01__cta-box">
+                        
+	
+
+
+                    </div>
+                </div>
+            </div>
+            
+              
+            
+        </div>
+    </div>
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+  
+  
+
+	
+	
+	
+	
+	
+  
+  
+
+	<div 
+    class="popup-component js-custom-popup page-component__bg_image_box    bg-white-color   popup-component_no-image is-not-first-component"
+    id="popup-01-22285"
+    
+    
+  >
+		<button class="popup-component__close-button js-close-custom-popup-button">
+			<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M20.0806 17.9986L30.6275 5.42673C30.8043 5.2178 30.6556 4.90039 30.3824 4.90039H27.1762C26.9873 4.90039 26.8065 4.98477 26.682 5.12941L17.9833 15.4995L9.28465 5.12941C9.16411 4.98477 8.98331 4.90039 8.79045 4.90039H5.5842C5.31099 4.90039 5.16233 5.2178 5.33911 5.42673L15.886 17.9986L5.33911 30.5705C5.29951 30.6171 5.2741 30.674 5.26591 30.7346C5.25771 30.7952 5.26708 30.8568 5.29288 30.9122C5.31869 30.9677 5.35985 31.0145 5.41149 31.0472C5.46313 31.0799 5.52307 31.0972 5.5842 31.0968H8.79045C8.97929 31.0968 9.16009 31.0124 9.28465 30.8678L17.9833 20.4977L26.682 30.8678C26.8025 31.0124 26.9833 31.0968 27.1762 31.0968H30.3824C30.6556 31.0968 30.8043 30.7794 30.6275 30.5705L20.0806 17.9986Z" fill="white"/>
+			</svg>				
+		</button>
+		<div class="popup-component__bg_image_box">
+			
+			
+			<div 
+          class="page-component__bg_overlay_box " 
+          style=""
+        >
+				
+			</div>
+			
+			<div class="page-component__wrapper" style="z-index: 11;padding-top: 1px;padding-bottom: 1px;">
+				
+
+
+
+    
+    
+    
+    
+    <div class="popup-01 graphics-image default-graphics-image">
+        <div class="container container--premid popup-01__container">
+            <div class="popup-01__left">
+                <div class="popup-01__content">
+                    
+                        <h2 class="title-text heading popup-01__heading">Thanks!</h2>
+                    
+                    
+                        <p class="subtitle-text content_box popup-01__text"><p>We will review and publish your platform soon!</p>
+</p>
+                    
+                    <div class="popup-01__cta-box">
+                        
+	
+
+
+                    </div>
+                </div>
+            </div>
+            
+              
+            
+        </div>
+    </div>
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+  
+  
+
+	
+	
+	
+	
+	
+  
+  
+
+	<div 
+    class="popup-component js-custom-popup page-component__bg_image_box    bg-white-color   popup-component_no-image is-not-first-component"
+    id="popup-01-62892"
+    
+    
+  >
+		<button class="popup-component__close-button js-close-custom-popup-button">
+			<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M20.0806 17.9986L30.6275 5.42673C30.8043 5.2178 30.6556 4.90039 30.3824 4.90039H27.1762C26.9873 4.90039 26.8065 4.98477 26.682 5.12941L17.9833 15.4995L9.28465 5.12941C9.16411 4.98477 8.98331 4.90039 8.79045 4.90039H5.5842C5.31099 4.90039 5.16233 5.2178 5.33911 5.42673L15.886 17.9986L5.33911 30.5705C5.29951 30.6171 5.2741 30.674 5.26591 30.7346C5.25771 30.7952 5.26708 30.8568 5.29288 30.9122C5.31869 30.9677 5.35985 31.0145 5.41149 31.0472C5.46313 31.0799 5.52307 31.0972 5.5842 31.0968H8.79045C8.97929 31.0968 9.16009 31.0124 9.28465 30.8678L17.9833 20.4977L26.682 30.8678C26.8025 31.0124 26.9833 31.0968 27.1762 31.0968H30.3824C30.6556 31.0968 30.8043 30.7794 30.6275 30.5705L20.0806 17.9986Z" fill="white"/>
+			</svg>				
+		</button>
+		<div class="popup-component__bg_image_box">
+			
+			
+			<div 
+          class="page-component__bg_overlay_box " 
+          style=""
+        >
+				
+			</div>
+			
+			<div class="page-component__wrapper" style="z-index: 10;padding-top: 1px;padding-bottom: 1px;">
+				
+
+
+
+    
+    
+    
+    
+    <div class="popup-01 graphics-image default-graphics-image">
+        <div class="container container--premid popup-01__container">
+            <div class="popup-01__left">
+                <div class="popup-01__content">
+                    
+                        <h2 class="title-text heading popup-01__heading">Done!</h2>
+                    
+                    
+                        <p class="subtitle-text content_box popup-01__text"><p>Thank you for joining us. See you later!</p>
+</p>
+                    
+                    <div class="popup-01__cta-box">
+                        
+	
+
+
+                    </div>
+                </div>
+            </div>
+            
+              
+            
+        </div>
+    </div>
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+  
+  
+
+
+
+	
+
+
+
+
+
+
+
+
+
+    
+	
+	
+        
+        <div class="bg-white-color">
+            <footer 
+              class="footer-04 "
+              id="footer"
+              style=""
+              
+            >
+                <div class="footer-04__top">
+                    <div class="container">
+                        <div class="footer-04__top_wrapper ">
+                            
+                                
+	
+  
+	<div class="footer-04__col">
+		
+		
+			<div class="content-text def-14 footer-04__info content_box">AI Python Libraries - Your all-in-one place for AI development.</div>
+		
+	</div>
+
+
+                            
+                            
+                                
+                                    <div class="footer-04__col">
+                                        <h3 class="def-18_72 title-text--inner footer-04__title">Company</h3>
+                                        <ul class="footer-04__list">
+                                            
+                                                
+                                                    <li class="footer-04__item">
+                                                        <a
+                                                                href="/about"
+                                                                target="_blank"
+                                                                class="content-text def-14 footer-04__link">
+                                                            About
+                                                        </a>
+                                                    </li>
+                                                
+                                            
+                                                
+                                            
+                                                
+                                            
+                                                
+                                            
+                                        </ul>
+                                    </div>
+                                
+                            
+                                
+                                    <div class="footer-04__col">
+                                        <h3 class="def-18_72 title-text--inner footer-04__title">Resources</h3>
+                                        <ul class="footer-04__list">
+                                            
+                                                
+                                            
+                                                
+                                                    <li class="footer-04__item">
+                                                        <a
+                                                                href="/libraries"
+                                                                target="_blank"
+                                                                class="content-text def-14 footer-04__link">
+                                                            Libraries
+                                                        </a>
+                                                    </li>
+                                                
+                                            
+                                                
+                                            
+                                                
+                                            
+                                        </ul>
+                                    </div>
+                                
+                            
+                            
+                                <div class="footer-04__col">
+                                    
+                                        <h3 class="def-18_72 title-text--inner footer-04__title">Follow us</h3>
+                                    
+                                    <div class="footer-04__social_box">
+                                        
+	
+	<div class="social-buttons  social-buttons--left ">
+		<ul class="social-buttons__list">
+		<li class="social-buttons__item"><a
+								class="social-buttons__link social-buttons__link--x"
+								href="https://x.com/DanielGPT2022?t=98aP5nsmtceMrVp9to00vg&amp;s=09" target="_blank"><img
+                                loading="lazy"
+								class="social-buttons__icon"
+                                alt="x icon"
+								src="static/img/icons/social/color/x.svg"/></a></li>
+		</ul>
+	</div>
+
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </div>
+                    
+                        
+                            
+	
+	<div class="footer-04__bottom">
+		<div class="container">
+			<div class="footer-04__bottom_wrapper footer-04__bottom_wrapper--center">
+				
+					
+	
+
+
+				
+				<ul class="footer-04__bottom_links ">
+					
+            
+              <li class="footer-04__bottom_links_item">
+                <a target="_blank" href="mailto:valentin.marin83@gmail.com" class="content-text def-12 footer-04__bottom_link footer-04__bottom_item">
+                  Email
+                </a>
+              </li>
+            
+					
+            
+              <li class="footer-04__bottom_links_item">
+                <a target="_blank" href="tel:+40728083312" class="content-text def-12 footer-04__bottom_link footer-04__bottom_item">
+                  Phone
+                </a>
+              </li>
+            
+					
+            
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+                        
+                    
+                    
+                </div>
+            </footer>
+        </div>
+	
+  
+    <style>
+      
+/* Buttons */
+
+#footer .button {
+    padding: 16px 32px 18px;
+    min-width: 220px;
+    min-height: 48px;
+    border-radius: 40px;
+    box-shadow: none;
+}
+
+#footer .button:hover {
+    box-shadow:none;
+}
+
+#footer .button__text {
+    font-size: 16px;
+    font-weight: 500;
+   
+}
+
+#footer .container {
+    padding: 0 32px;
+    max-width: 100%;
+}
+
+@media (max-width: 1300px) {
+#footer .container {
+    padding: 0 15px;
+    }
+}
+
+#footer .footer-04__top_wrapper {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 20px;
+}
+
+#footer .footer-04__bottom_wrapper {
+    padding: 34px 0 48px;
+}
+
+#footer .social-buttons__link {
+    filter: brightness(0);
+}
+    </style>
+  
+  
+
+
+
+
+	<a class="by-unicorn-platform" href="https://unicornplatform.com/?ref=user_website" target="_blank" title="This page was made in Unicorn Platform">
+  <div class="by-unicorn-platform__box">
+    <span class="by-unicorn-platform__left-text">Built on</span>
+    <span class="by-unicorn-platform__right-text">
+      <b class="by-unicorn-platform__text">Unicorn Platform</b>
+      <img loading="lazy" class="by-unicorn-platform__logo" src="https://cdn.unicornplatform.com/static/img/logos/unicorn-platform-logo.svg" height="12" width="12" alt="Unicorn Platform logo">
+    </span>
+  </div>
+</a>
+
+
+
+	<div class="popup-component__mask js-close-custom-popup-button js-custom-popup-mask"></div>
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="pswp__bg"></div>
+	<div class="pswp__scroll-wrap">
+		<div class="pswp__container">
+			<div class="pswp__item"></div>
+			<div class="pswp__item"></div>
+			<div class="pswp__item"></div>
+		</div>
+		<div class="pswp__ui pswp__ui--hidden">
+			<div class="pswp__top-bar">
+				<div class="pswp__counter"></div>
+				<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+				<button class="pswp__button pswp__button--share" title="Share"></button>
+				<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+				<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+				<div class="pswp__preloader">
+					<div class="pswp__preloader__icn">
+						<div class="pswp__preloader__cut">
+							<div class="pswp__preloader__donut"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+				<div class="pswp__share-tooltip"></div>
+			</div>
+			<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+			<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+			<div class="pswp__caption">
+				<div class="pswp__caption__center"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+			.custom-colors-enabled .fill-main{
+				fill: #F4F5FB
+			}
+
+			.custom-colors-enabled .button--accent-outline .icon svg *,
+			.button--accent-outline .icon svg .custom-colors-enabled *,
+			.custom-colors-enabled .button--accent-outline .button__system_icon svg *,
+			.button--accent-outline .button__system_icon svg .custom-colors-enabled * {
+				fill: #050318
+			}
+
+			.custom-colors-enabled .stroke-main {
+				stroke: #F4F5FB
+			}
+
+			.custom-colors-enabled .comps .button--accent-outline,
+			.comps .custom-colors-enabled .button--accent-outline,
+			 .custom-colors-enabled .store-button--white:hover{
+				border-color: #050318
+			}
+			.custom-colors-enabled .border-main,
+			.custom-colors-enabled .text-input:focus,
+      .custom-colors-enabled .form__input .chosen-container.chosen-container-active .chosen-choices,
+			.custom-colors-enabled .textarea:focus,
+			.custom-colors-enabled .select:focus,
+			.custom-colors-enabled .pricing-02__card_box--accent,
+			.custom-colors-enabled .pricing-03__hover,
+			.custom-colors-enabled .pricing-04__card--accent,
+			.custom-colors-enabled .pricing-04__hover,
+			.custom-colors-enabled .pricing-05__hover,
+			.custom-colors-enabled .bg-medium-color .cta_form-04__wrapper,
+			.bg-medium-color .custom-colors-enabled .cta_form-04__wrapper,
+			.custom-colors-enabled .bg-light-color .cta_form-04__wrapper,
+			.bg-light-color .custom-colors-enabled .cta_form-04__wrapper,
+			.custom-colors-enabled .bg-medium-color .cta_form-04__bottom,
+			.bg-medium-color .custom-colors-enabled .cta_form-04__bottom,
+			.custom-colors-enabled .bg-light-color .cta_form-04__bottom,
+			.bg-light-color .custom-colors-enabled .cta_form-04__bottom,
+			.custom-colors-enabled .bg-medium-color .cta_button-16__wrapper,
+			.bg-medium-color .custom-colors-enabled .cta_button-16__wrapper,
+			.custom-colors-enabled .bg-light-color .cta_button-16__wrapper,
+			.bg-light-color .custom-colors-enabled .cta_button-16__wrapper,
+			.custom-colors-enabled .bg-medium-color .links-02__list,
+			.bg-medium-color .custom-colors-enabled .links-02__list,
+			.custom-colors-enabled .bg-light-color .links-02__list,
+			.bg-light-color .custom-colors-enabled .links-02__list,
+			.custom-colors-enabled .faq-01__question:hover,
+			.custom-colors-enabled .faq-03__question:hover,
+			.custom-colors-enabled .features-09__item--new,
+			.custom-colors-enabled .bg-medium-color .steps-01__number,
+			.bg-medium-color .custom-colors-enabled .steps-01__number,
+			.custom-colors-enabled .bg-light-color .steps-01__number,
+			.bg-light-color .custom-colors-enabled .steps-01__number {
+				border-color: #F4F5FB
+			}
+
+
+
+			.custom-colors-enabled .comps .button--accent-outline,
+			.comps .custom-colors-enabled .button--accent-outline{
+				color: #050318
+			}
+			.custom-colors-enabled .color-main,
+			.custom-colors-enabled .link,
+			.custom-colors-enabled .feature__link,
+			.custom-colors-enabled .testimonials-03__person_link,
+			.custom-colors-enabled .footer-01__link,
+			.custom-colors-enabled .faq-05__link,
+			.custom-colors-enabled .features-16__link,
+			.custom-colors-enabled .subheading,
+			.custom-colors-enabled .content_box a,
+			.content_box .custom-colors-enabled a,
+			.custom-colors-enabled .tab__button.state-active-tab,
+			.custom-colors-enabled .tab__button--active:focus,
+			.custom-colors-enabled .score__value,
+			.custom-colors-enabled .form__message_opener_box,
+			.custom-colors-enabled .message__bubble_link,
+			.custom-colors-enabled .team-05__person_name,
+			.custom-colors-enabled .tabs-04__button.state-active-tab,
+			.custom-colors-enabled .tabs-04__button--active:focus,
+			.custom-colors-enabled .pricing-02__hover,
+			.custom-colors-enabled .pricing-03__hover,
+			.custom-colors-enabled .pricing-04__hover,
+			.custom-colors-enabled .pricing-05__hover,
+			.custom-colors-enabled .cta_button-25__subheading,
+			.custom-colors-enabled .cta_button-31__heading,
+			.custom-colors-enabled .footer-03__pages_link:hover,
+			.custom-colors-enabled .code-02__info_prefix,
+			.custom-colors-enabled .features-17__item .feature__title_text,
+			.features-17__item .custom-colors-enabled .feature__title_text {
+				color: #F4F5FB
+			}
+
+			.custom-colors-enabled .color-main-hover:hover,
+			.custom-colors-enabled .link:hover,
+			.custom-colors-enabled .feature__link:hover,
+			.custom-colors-enabled .testimonials-03__person_link:hover,
+			.custom-colors-enabled .footer-01__link:hover,
+			.custom-colors-enabled .faq-05__link:hover,
+			.custom-colors-enabled .features-16__link:hover, .custom-colors-enabled .message__bubble_link:hover {
+				color: #040315
+			}
+
+			.custom-colors-enabled .comps .button--accent-bg,
+			.comps .custom-colors-enabled .button--accent-bg,
+			.custom-colors-enabled .store-button:hover,
+			.custom-colors-enabled .circle-button--accent-bg,
+			.custom-colors-enabled .circle-button--accent-bg .circle-button__hover_bg,
+			.circle-button--accent-bg .custom-colors-enabled .circle-button__hover_bg,
+			.custom-colors-enabled .circle-button--light-bg:hover,
+			.custom-colors-enabled .slick-dots li.slick-active button,
+			.slick-dots li.slick-active .custom-colors-enabled button{
+				background-color: #050318
+			}
+			.custom-colors-enabled .bg-main,
+			.custom-colors-enabled .radio__check:before,
+			.custom-colors-enabled .checkbox__check:before,
+			.custom-colors-enabled .social-buttons__link--circle,
+			.custom-colors-enabled .roadmap-01__column,
+			.custom-colors-enabled .cta_button-25__item::before,
+			.custom-colors-enabled .testimonials-05__blue_box::before,
+			.custom-colors-enabled .footer-03__pages_item:after,
+			.custom-colors-enabled .features-02__number:before,
+			.custom-colors-enabled .features-09__item--new .tag,
+			.features-09__item--new .custom-colors-enabled .tag,
+			.custom-colors-enabled .features-15__item::before,
+			.custom-colors-enabled .bg-medium-color .steps-01__list:before,
+			.bg-medium-color .custom-colors-enabled .steps-01__list:before,
+			.custom-colors-enabled .bg-light-color .steps-01__list:before,
+			.bg-light-color .custom-colors-enabled .steps-01__list:before,
+            .comps.custom-colors-enabled .bg-accent-color .footer-02,
+            .comps.custom-colors-enabled .bg-accent-color .footer-04{
+				background-color: #F4F5FB
+			}
+
+			.custom-colors-enabled .bg-main-hover:hover,
+			.custom-colors-enabled .comps .button--accent-bg:hover,
+			.comps .custom-colors-enabled .button--accent-bg:hover,
+			.custom-colors-enabled .checkbox__input:checked:hover ~ .checkbox__check:hover:before {
+				background-color: #040315
+			}
+
+			.custom-colors-enabled .border-alt,
+			.custom-colors-enabled .comps .button--alt-accent-outline,
+			.comps .custom-colors-enabled .button--alt-accent-outline,
+			.custom-colors-enabled .bg-accent-color .pricing-02__card_box--accent,
+			.bg-accent-color .custom-colors-enabled .pricing-02__card_box--accent,
+			.custom-colors-enabled .bg-accent-color .pricing-04__card--accent,
+			.bg-accent-color .custom-colors-enabled .pricing-04__card--accent {
+				border-color: #050318
+			}
+
+			.custom-colors-enabled .color-alt,
+			.custom-colors-enabled .comps .button--alt-accent-outline,
+			.comps .custom-colors-enabled .button--alt-accent-outline {
+				color: #050318
+			}
+
+			.custom-colors-enabled .bg-alt,
+			.custom-colors-enabled .comps .button--alt-accent-bg,
+			.comps .custom-colors-enabled .button--alt-accent-bg,
+			.custom-colors-enabled .bg-accent-color .slick-dots li.slick-active button,
+			.bg-accent-color .slick-dots li.slick-active .custom-colors-enabled button {
+				background-color: #050318
+			}
+
+			.custom-colors-enabled .bg-alt-hover:hover,
+			.custom-colors-enabled .comps .button--alt-accent-bg:hover,
+			.comps .custom-colors-enabled .button--alt-accent-bg:hover {
+				background-color: #040315
+			}
+
+			.custom-colors-enabled .fill-alt .icon svg *,
+			.custom-colors-enabled .comps .button--alt-accent-outline .icon svg *,
+			.comps .custom-colors-enabled .button--alt-accent-outline .icon svg *,
+			.custom-colors-enabled .fill-alt .button__system_icon svg *,
+			.custom-colors-enabled .comps .button--alt-accent-outline .button__system_icon svg *,
+			.comps .custom-colors-enabled .button--alt-accent-outline .button__system_icon svg * {
+				fill: #050318
+			}
+
+			.custom-colors-enabled .fill-alt-hover:hover .icon svg *,
+			.custom-colors-enabled .feature__link:hover .icon svg *,
+			.custom-colors-enabled .fill-alt-hover:hover .button__system_icon svg *,
+			.custom-colors-enabled .feature__link:hover .button__system_icon svg * {
+				fill: #050318
+			}
+
+
+			.custom-colors-enabled .bg-accent-color .page-component__bg_overlay_box:not(.page-component__bg_overlay_box--always-white),
+			.custom-colors-enabled .bg-accent-color .background-color-picker__circle,
+			.custom-colors-enabled .bg-accent-color .text--01__box {
+				background-color: #F4F5FB
+			}
+      .custom-colors-enabled {
+        --primary: #050318;
+        --primary-dark: #040315;
+        --accent: #F4F5FB;
+        --secondary: #050318;
+        --secondary-dark: #040315;
+      }
+		</style>
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css" integrity="sha512-mtXspRdOWHCYp+f4c7CkWGYPPRAhq9X+xCvJMUBVAb6pqA4U8pxhT3RWT3LP3bKbiolYL2CkL1bSKZZO4eeTew==" crossorigin="anonymous" referrerpolicy="no-referrer" /><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script>hljs.highlightAll();</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
