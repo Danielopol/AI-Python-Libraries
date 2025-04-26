@@ -11,3 +11,4 @@
 /blog/* /blog.html 200
 /libraries/* /libraries.html 200
 /* /index.html 200
+/categories/* /categories.html 200
