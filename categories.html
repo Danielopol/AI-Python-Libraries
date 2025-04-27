@@ -1898,10 +1898,165 @@ window.unicornplatform.openPopup(&quot;popup-01-57905&quot;)"
     }
 </style>
 
-<script src="category_script.js"></script>
+<script src="/category_script.js"></script>
 
-<script src="direct-loader.js"></script>
-<script src="debug-helper.js"></script>
+<script src="/direct-loader.js"></script>
+<script src="/debug-helper.js"></script>
+
+<!-- Fallback: Inline loader -->
+<script>
+// Fallback direct loader for AI Python Libraries
+document.addEventListener('DOMContentLoaded', function() {
+  // Only run if the external scripts failed to load
+  if (window.categoryLoaderInitialized) return;
+  
+  console.log('Using fallback inline loader');
+  window.categoryLoaderInitialized = true;
+  
+  // Google Sheets URLs
+  const ITEMS_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHHCGDLX5wuhG7HzMtzs9Sh_mvKKMBCxR4lQnmgVE77dxbWj65lk3-fAGMqUF45xp4FYA6J1Y_A4Ak/pub?gid=368833303&single=true&output=csv";
+  const CATEGORIES_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHHCGDLX5wuhG7HzMtzs9Sh_mvKKMBCxR4lQnmgVE77dxbWj65lk3-fAGMqUF45xp4FYA6J1Y_A4Ak/pub?gid=1604699992&single=true&output=csv";
+  
+  // Function to get URL parameter or path segment
+  function getCategoryFromUrl() {
+    // Check for path-based category
+    const pathSegments = window.location.pathname.split('/').filter(segment => segment);
+    
+    if (pathSegments.length >= 2 && pathSegments[0] === 'categories') {
+      return pathSegments[1];
+    }
+    
+    // Fallback to query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('category') || '';
+  }
+  
+  // Convert kebab-case to Title Case
+  function formatCategoryName(category) {
+    return category.split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+  
+  // Main function to load and display items
+  async function loadCategoryItems() {
+    const categorySlug = getCategoryFromUrl();
+    if (!categorySlug) return;
+    
+    const categoryName = formatCategoryName(categorySlug);
+    console.log('Loading category:', categoryName);
+    
+    try {
+      // Update heading
+      const heading = document.querySelector('.directory-01__heading');
+      if (heading) {
+        heading.textContent = 'Explore ' + categoryName + ' Libraries';
+      }
+      
+      // Update subtitle
+      const subtitle = document.querySelector('.directory-01__subtitle');
+      if (subtitle) {
+        subtitle.textContent = `Libraries for ${categoryName.toLowerCase()} in Python. Find the right tools for your AI project.`;
+      }
+      
+      // Fetch items data
+      const response = await fetch(ITEMS_SHEET_URL);
+      const csvText = await response.text();
+      
+      // Simple CSV parsing
+      const lines = csvText.split('\n');
+      const headers = lines[0].split(',');
+      
+      // Parse items
+      const items = [];
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',');
+        const item = {};
+        
+        headers.forEach((header, index) => {
+          item[header.toLowerCase().trim()] = values[index] || '';
+        });
+        
+        items.push(item);
+      }
+      
+      // Filter by category
+      const filteredItems = items.filter(item => {
+        if (!item.category) return false;
+        
+        const itemCategories = item.category.toLowerCase();
+        const searchCategory = categoryName.toLowerCase();
+        
+        return itemCategories.includes(searchCategory);
+      });
+      
+      console.log(`Found ${filteredItems.length} matching items`);
+      
+      // Display items
+      const itemsList = document.querySelector('.directory-01__items');
+      if (itemsList) {
+        itemsList.innerHTML = '';
+        
+        if (filteredItems.length > 0) {
+          filteredItems.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'directory-item-parent';
+            
+            li.innerHTML = `
+              <div class="directory-01__item card-container sc-br-0_5">
+                <a target="_blank" href="https://aipythonlibraries.com/tools/${item.page || item.title.toLowerCase()}">
+                  <div class="directory-01__title-box">
+                    <h3 class="title-text--inner directory-01__title def-16">${item.title || ''}</h3>
+                    <div class="directory-01__rating">
+                      <span class="directory-01__rating-text content-text def-14">${item.rank || ''}</span>
+                      <svg viewBox="0 0 16 16" height="16" width="16" class="directory-01__rating-icon">
+                        <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="directory-01__text content_box content-text def-14">
+                    <p>${item.text || ''}</p>
+                  </div>
+                </a>
+              </div>
+            `;
+            
+            itemsList.appendChild(li);
+          });
+        } else {
+          itemsList.innerHTML = '<li style="text-align: center; padding: 20px;">No libraries found for this category.</li>';
+        }
+      }
+      
+      // Remove loading state
+      const directory = document.querySelector('.directory-01');
+      if (directory) {
+        directory.classList.remove('dir-is-loading');
+      }
+      
+    } catch (error) {
+      console.error('Error loading data:', error);
+      
+      // Show error message
+      const itemsList = document.querySelector('.directory-01__items');
+      if (itemsList) {
+        itemsList.innerHTML = `<li style="text-align: center; padding: 20px; color: red;">
+          Error loading data. Please try again later.
+        </li>`;
+      }
+      
+      // Remove loading state
+      const directory = document.querySelector('.directory-01');
+      if (directory) {
+        directory.classList.remove('dir-is-loading');
+      }
+    }
+  }
+  
+  // Start loading data
+  loadCategoryItems();
+});
+</script>
 
 <script>
 // Compatibility enhancement for Google Sheets data after Netlify migration

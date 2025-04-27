@@ -1,5 +1,8 @@
 // Direct data loader for AI Python Libraries
 document.addEventListener('DOMContentLoaded', function() {
+  // Set initialization flag to prevent duplicate loading
+  window.categoryLoaderInitialized = true;
+  
   // Google Sheets URLs
   const ITEMS_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHHCGDLX5wuhG7HzMtzs9Sh_mvKKMBCxR4lQnmgVE77dxbWj65lk3-fAGMqUF45xp4FYA6J1Y_A4Ak/pub?gid=368833303&single=true&output=csv";
   const CATEGORIES_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSHHCGDLX5wuhG7HzMtzs9Sh_mvKKMBCxR4lQnmgVE77dxbWj65lk3-fAGMqUF45xp4FYA6J1Y_A4Ak/pub?gid=1604699992&single=true&output=csv";
