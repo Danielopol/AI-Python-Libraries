@@ -70,6 +70,27 @@
       try {
         window.uniApiResponseData = JSON.parse(document.getElementById('uniApiResponseData').textContent);
         console.log(window.uniApiResponseData);
+        
+        // Get category from URL parameter to dynamically update API response data
+        function getUrlParameter(name) {
+          name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+          var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+          var results = regex.exec(location.search);
+          return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        const categoryParam = getUrlParameter('category');
+        if (categoryParam) {
+          // Convert from url format to display format (e.g., deep-learning -> Deep Learning)
+          const displayCategory = categoryParam.split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+          
+          // Update API response data with current category
+          window.uniApiResponseData.data.title = displayCategory;
+          window.uniApiResponseData.data.slugified_title = categoryParam;
+        }
+        
       } catch(e) {
         window.uniApiResponseData = {error_message: 'Error parsing API response data'}
         console.log(window.uniApiResponseData);
@@ -534,7 +555,7 @@ html, .editor__templates_nav, .editor__components {
     &lt;/div&gt;
   &lt;/template&gt;
 &lt;/div&gt;"
-    data-filtersv2="{&#39;items&#39;: [{&#39;id&#39;: &#39;53a37832-cf19-4b8a-92d2-b3743cb1093f&#39;, &#39;label&#39;: &#39;&#39;, &#39;column&#39;: &#39;category&#39;, &#39;filters&#39;: [&#39;Deep Learning&#39;, &#39;Neural Network Framework&#39;, &#39;Generative AI&#39;, &#39;Data Manipulation&#39;, &#39;Scientific Computing&#39;, &#39;Data Visualization&#39;, &#39;Machine Learning&#39;, &#39;Tensor Computation&#39;, &#39;Data Manipulation and Analysis&#39;, &#39;Machine Learning (Gradient Boosting)&#39;, &#39;Natural Language Processing&#39;, &#39;Statistical Analysis and Econometrics&#39;, &#39;Machine Learning and Data Science&#39;, &#39;Hyperparameter Optimization&#39;, &#39;Machine Learning Auto ML&#39;, &#39;Data Visualisation&#39;, &#39;Graph Visualization&#39;, &#39;Explainable AI&#39;, &#39;Statistical Modeling&#39;, &#39;Web Scraping&#39;, &#39;Web Mining&#39;, &#39;Computer Vision&#39;, &#39;Graph Neural Networks&#39;, &#39;Deep Learning Frameworks&#39;, &#39;Data Management&#39;, &#39;Web Application Development&#39;, &#39;Interactive Computing&#39;, &#39;Experiment Tracking&#39;, &#39;Expert Systems&#39;, &#39;Data Processing&#39;, &#39;Big Data Processing&#39;, &#39;Model Inference&#39;, &#39;Data Validation&#39;, &#39;Geospatial Analysis&#39;, &#39;Geospatial Visualization&#39;, &#39;Signal Processing&#39;, &#39;Anomaly Detection&#39;, &#39;Data Mining&#39;, &#39;Feature Engineering&#39;, &#39;Experiment Management&#39;, &#39;Distributed Computing&#39;, &#39;Distributed Deep Learning&#39;, &#39;Game Development&#39;, &#39;Probabilistic Modeling&#39;, &#39;Reinforcement Learning&#39;, &#39;Natural Language Processing / Chatbots&#39;, &#39;Data Scraping&#39;, &#39;Web Development&#39;, &#39;Testing&#39;, &#39;Optimization&#39;, &#39;Database Management&#39;, &#39;Graph Analysis&#39;, &#39;Probabilistic Programming&#39;, &#39;Neural Networks&#39;, &#39;Data Analysis&#39;, &#39;Numerical Processing&#39;, &#39;Neural Network Visualization&#39;, &#39;Time Series Analysis&#39;, &#39;Audio Processing&#39;, &#39;LLM&#39;], &#39;sorting&#39;: &#39;no_sorting&#39;, &#39;isHidden&#39;: &#39;visible&#39;, &#39;multiselect&#39;: &#39;off&#39;, &#39;showByFilters&#39;: {&#39;mode&#39;: &#39;any&#39;, &#39;items&#39;: &#39;Deep Learning&#39;}}]}"
+    data-filtersv2="{&#39;items&#39;: [{&#39;id&#39;: &#39;53a37832-cf19-4b8a-92d2-b3743cb1093f&#39;, &#39;label&#39;: &#39;&#39;, &#39;column&#39;: &#39;category&#39;, &#39;filters&#39;: [&#39;Deep Learning&#39;, &#39;Neural Network Framework&#39;, &#39;Generative AI&#39;, &#39;Data Manipulation&#39;, &#39;Scientific Computing&#39;, &#39;Data Visualization&#39;, &#39;Machine Learning&#39;, &#39;Tensor Computation&#39;, &#39;Data Manipulation and Analysis&#39;, &#39;Machine Learning (Gradient Boosting)&#39;, &#39;Natural Language Processing&#39;, &#39;Statistical Analysis and Econometrics&#39;, &#39;Machine Learning and Data Science&#39;, &#39;Hyperparameter Optimization&#39;, &#39;Machine Learning Auto ML&#39;, &#39;Data Visualisation&#39;, &#39;Graph Visualization&#39;, &#39;Explainable AI&#39;, &#39;Statistical Modeling&#39;, &#39;Web Scraping&#39;, &#39;Web Mining&#39;, &#39;Computer Vision&#39;, &#39;Graph Neural Networks&#39;, &#39;Deep Learning Frameworks&#39;, &#39;Data Management&#39;, &#39;Web Application Development&#39;, &#39;Interactive Computing&#39;, &#39;Experiment Tracking&#39;, &#39;Expert Systems&#39;, &#39;Data Processing&#39;, &#39;Big Data Processing&#39;, &#39;Model Inference&#39;, &#39;Data Validation&#39;, &#39;Geospatial Analysis&#39;, &#39;Geospatial Visualization&#39;, &#39;Signal Processing&#39;, &#39;Anomaly Detection&#39;, &#39;Data Mining&#39;, &#39;Feature Engineering&#39;, &#39;Experiment Management&#39;, &#39;Distributed Computing&#39;, &#39;Distributed Deep Learning&#39;, &#39;Game Development&#39;, &#39;Probabilistic Modeling&#39;, &#39;Reinforcement Learning&#39;, &#39;Natural Language Processing / Chatbots&#39;, &#39;Data Scraping&#39;, &#39;Web Development&#39;, &#39;Testing&#39;, &#39;Optimization&#39;, &#39;Database Management&#39;, &#39;Graph Analysis&#39;, &#39;Probabilistic Programming&#39;, &#39;Neural Networks&#39;, &#39;Data Analysis&#39;, &#39;Numerical Processing&#39;, &#39;Neural Network Visualization&#39;, &#39;Time Series Analysis&#39;, &#39;Audio Processing&#39;, &#39;LLM&#39;], &#39;sorting&#39;: &#39;no_sorting&#39;, &#39;isHidden&#39;: &#39;visible&#39;, &#39;multiselect&#39;: &#39;off&#39;, &#39;showByFilters&#39;: {&#39;mode&#39;: &#39;any&#39;, &#39;items&#39;: function() { return window.uniApiResponseData?.data?.title || &#39;Deep Learning&#39;; }()}}]}"
     data-version="2"
     data-notfoundplaceholder="No results found"
 
