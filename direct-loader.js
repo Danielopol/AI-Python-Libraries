@@ -62,80 +62,109 @@ document.addEventListener('DOMContentLoaded', function() {
       .join(' ');
   }
   
+  // Normalize category string for comparison
+  function normalizeCategory(category) {
+    return category.toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  }
+  
+  // Check if an item belongs to a category
+  function itemMatchesCategory(item, categoryName) {
+    if (!item.category) return false;
+    
+    const normalizedItemCategories = item.category.split(';').map(c => normalizeCategory(c));
+    const normalizedCategory = normalizeCategory(categoryName);
+    
+    // Direct category match
+    const directMatch = normalizedItemCategories.some(cat => 
+      cat === normalizedCategory || 
+      cat.includes(normalizedCategory) || 
+      normalizedCategory.includes(cat)
+    );
+    
+    if (directMatch) return true;
+    
+    // Special cases handling
+    const categoryLower = categoryName.toLowerCase();
+    if (categoryLower === 'chatbots' && 
+        (item.category.toLowerCase().includes('chatbot') || 
+        item.category.toLowerCase().includes('natural language'))) {
+      return true;
+    }
+    
+    if (categoryLower === 'web scraping' && 
+        (item.category.toLowerCase().includes('scraping') || 
+        item.category.toLowerCase().includes('extraction'))) {
+      return true;
+    }
+    
+    return false;
+  }
+  
   // Main loader function
   async function loadCategoryData() {
     const categorySlug = getCategoryFromUrl();
     if (!categorySlug) return;
     
     const categoryName = formatCategoryName(categorySlug);
-    console.log('Loading data for category:', categoryName);
-    
-    // Update page title and heading
-    document.title = categoryName + " - AI Python Libraries";
-    
-    const heading = document.querySelector('.directory-01__heading');
-    if (heading) {
-      heading.textContent = 'Explore ' + categoryName + ' Libraries';
-    }
+    console.log('Loading category data for:', categoryName);
     
     try {
+      // Show loading message
+      const itemsList = document.querySelector('.directory-01__items');
+      if (itemsList) {
+        itemsList.innerHTML = '<li style="text-align: center; padding: 20px;">Loading items for ' + categoryName + '...</li>';
+      }
+      
+      // Update page title and heading
+      document.title = categoryName + " - AI Python Libraries";
+      
+      const heading = document.querySelector('.directory-01__heading');
+      if (heading) {
+        heading.textContent = 'Explore ' + categoryName + ' Libraries';
+      }
+      
       // Fetch and parse items data
+      console.log('Fetching items data from:', ITEMS_SHEET_URL);
       const itemsResponse = await fetch(ITEMS_SHEET_URL);
       const itemsCSV = await itemsResponse.text();
       const allItems = parseCSV(itemsCSV);
+      console.log('Loaded', allItems.length, 'items');
       
-      // Fetch and parse categories data (for descriptions)
+      // Fetch category details (for description)
+      console.log('Fetching categories data from:', CATEGORIES_SHEET_URL);
       const categoriesResponse = await fetch(CATEGORIES_SHEET_URL);
       const categoriesCSV = await categoriesResponse.text();
       const allCategories = parseCSV(categoriesCSV);
+      console.log('Loaded', allCategories.length, 'categories');
       
-      // Find category description
-      const categoryInfo = allCategories.find(cat => 
-        cat.slugified_title === categorySlug || 
-        cat.title.toLowerCase() === categoryName.toLowerCase()
-      );
-      
-      // Update subtitle with category description
-      const subtitle = document.querySelector('.directory-01__subtitle');
-      if (subtitle && categoryInfo && categoryInfo.text) {
-        subtitle.textContent = categoryInfo.text;
-      } else if (subtitle) {
-        subtitle.textContent = `Libraries for ${categoryName.toLowerCase()} in Python. Find the right tools for your AI project.`;
-      }
-      
-      // Filter items by category
-      const matchingItems = allItems.filter(item => {
-        if (!item.category) return false;
-        
-        // Check if item category matches current category
-        const categoryLower = categoryName.toLowerCase();
-        const itemCategory = item.category.toLowerCase();
-        
-        // Direct match
-        if (itemCategory.includes(categoryLower)) return true;
-        
-        // Handle special cases
-        if (categorySlug === 'chatbots' && (
-          itemCategory.includes('chatbot') || 
-          itemCategory.includes('natural language processing') || 
-          itemCategory.includes('nlp'))) {
+      // Find current category in categories list
+      const categoryInfo = allCategories.find(cat => {
+        if (cat.slugified_title && cat.slugified_title.toLowerCase() === categorySlug.toLowerCase()) {
           return true;
         }
-        
-        if (categorySlug === 'web-scraping' && (
-          itemCategory.includes('scraping') || 
-          itemCategory.includes('web mining') || 
-          itemCategory.includes('extraction'))) {
+        if (cat.title && normalizeCategory(cat.title) === normalizeCategory(categoryName)) {
           return true;
         }
-        
         return false;
       });
       
-      console.log(`Found ${matchingItems.length} items for category ${categoryName}`);
+      // Update subtitle with category description
+      const subtitle = document.querySelector('.directory-01__subtitle');
+      if (subtitle) {
+        if (categoryInfo && categoryInfo.text) {
+          subtitle.textContent = categoryInfo.text;
+        } else {
+          subtitle.textContent = `Libraries for ${categoryName.toLowerCase()} in Python. Find the right tools for your AI project.`;
+        }
+      }
       
-      // Clear loading indicator and populate items
-      const itemsList = document.querySelector('.directory-01__items');
+      // Filter items by category
+      const matchingItems = allItems.filter(item => itemMatchesCategory(item, categoryName));
+      console.log(`Found ${matchingItems.length} items matching category '${categoryName}'`);
+      
+      // Update DOM with matching items
       if (itemsList) {
         itemsList.innerHTML = '';
         
@@ -145,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
             itemElement.className = 'directory-item-parent';
             itemElement.dataset.filters = JSON.stringify({category: item.category || ''});
             
-            // Create item HTML
+            // Create item HTML - matching the original item template format
             itemElement.innerHTML = `
               <div class="directory-01__item card-container sc-br-0_5">
                 <a target="_blank" href="https://aipythonlibraries.com/tools/${item.page || item.title.toLowerCase()}">
@@ -169,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
           });
         } else {
           // No matching items found
-          itemsList.innerHTML = '<li style="text-align: center; padding: 20px;">No libraries found for this category.</li>';
+          itemsList.innerHTML = '<li style="text-align: center; padding: 20px;">No libraries found for ' + categoryName + ' category.</li>';
         }
         
         // Update search input
@@ -191,6 +220,37 @@ document.addEventListener('DOMContentLoaded', function() {
           placeholder.style.display = matchingItems.length > 0 ? 'none' : 'flex';
         }
       }
+      
+      // Create category filter buttons to match Unicorn Platform's interface
+      const filterContainer = document.querySelector('.directory-01__tags-box');
+      if (filterContainer) {
+        filterContainer.innerHTML = '';
+        
+        // Get unique categories from items
+        const uniqueCategories = new Set();
+        allItems.forEach(item => {
+          if (item.category) {
+            const categories = item.category.split(';');
+            categories.forEach(cat => uniqueCategories.add(cat.trim()));
+          }
+        });
+        
+        // Create and add filter buttons
+        Array.from(uniqueCategories).sort().forEach(cat => {
+          const button = document.createElement('button');
+          button.className = 'directory-01__tag-button content-text def-14';
+          button.textContent = cat;
+          button.dataset.tag = cat;
+          
+          // Make current category button active
+          if (normalizeCategory(cat) === normalizeCategory(categoryName)) {
+            button.classList.add('is-selected');
+          }
+          
+          filterContainer.appendChild(button);
+        });
+      }
+      
     } catch (error) {
       console.error('Error loading category data:', error);
       
@@ -198,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const itemsList = document.querySelector('.directory-01__items');
       if (itemsList) {
         itemsList.innerHTML = `<li style="text-align: center; padding: 20px; color: #e74c3c;">
-          Error loading data. Please try again later.
+          Error loading data: ${error.message}. Please try again later.
         </li>`;
       }
       
@@ -212,4 +272,25 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Start loading data
   loadCategoryData();
+  
+  // Debug function to show raw data (can be triggered from console)
+  window.debugLibraryData = async function() {
+    try {
+      const itemsResponse = await fetch(ITEMS_SHEET_URL);
+      const itemsText = await itemsResponse.text();
+      console.log('Raw items data:', itemsText);
+      
+      const categoriesResponse = await fetch(CATEGORIES_SHEET_URL);
+      const categoriesText = await categoriesResponse.text();
+      console.log('Raw categories data:', categoriesText);
+      
+      return {
+        items: parseCSV(itemsText),
+        categories: parseCSV(categoriesText)
+      };
+    } catch (e) {
+      console.error('Error in debug function:', e);
+      return null;
+    }
+  };
 }); 
