@@ -89,6 +89,31 @@
           // Update API response data with current category
           window.uniApiResponseData.data.title = displayCategory;
           window.uniApiResponseData.data.slugified_title = categoryParam;
+          
+          // Add category-specific metadata
+          const categoryDescriptions = {
+            'web-scraping': 'Tools for extracting data from websites automatically. Used for data collection, monitoring, and automation.',
+            'data-manipulation': 'Libraries for cleaning, transforming, and processing data efficiently.',
+            'scientific-computing': 'Numerical and scientific computation tools for research and analysis.',
+            'deep-learning': 'Neural network frameworks for complex pattern recognition and feature learning.',
+            'machine-learning': 'Tools for building predictive models and statistical analysis.',
+            'natural-language-processing': 'Libraries for processing and analyzing human language data.',
+            'computer-vision': 'Tools for image and video analysis, recognition, and processing.'
+          };
+          
+          // Set description if available, otherwise keep default
+          if (categoryDescriptions[categoryParam]) {
+            window.uniApiResponseData.data.text = categoryDescriptions[categoryParam];
+          }
+          
+          // Set page title and meta
+          document.title = displayCategory + " - AI Python Libraries";
+          
+          // Update meta tags for SEO
+          const metaDescription = document.querySelector('meta[name="description"]');
+          if (metaDescription) {
+            metaDescription.content = `Explore our curated list of Python libraries for ${displayCategory.toLowerCase()}. Find the best tools for your AI development projects.`;
+          }
         }
         
       } catch(e) {
@@ -1873,6 +1898,87 @@ window.unicornplatform.openPopup(&quot;popup-01-57905&quot;)"
 </style>
 
 <script src="category_script.js"></script>
+
+<script>
+// Additional initialization to ensure proper category loading
+document.addEventListener('DOMContentLoaded', function() {
+  // Function to get URL parameters
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  }
+  
+  // Get category from URL parameter
+  const categoryParam = getUrlParameter('category');
+  
+  if (categoryParam) {
+    // Wait for directory to load
+    const waitForDirectoryLoad = setInterval(function() {
+      if (!document.querySelector('.directory-01').classList.contains('dir-is-loading')) {
+        clearInterval(waitForDirectoryLoad);
+        
+        // Get all directory items
+        const items = document.querySelectorAll('.directory-item-parent');
+        
+        // Get the display category format
+        const displayCategory = categoryParam.split('-')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        
+        const categoryLower = displayCategory.toLowerCase();
+        
+        // Filter items based on category
+        items.forEach(item => {
+          try {
+            // Get item data
+            const itemFilters = JSON.parse(item.dataset.filters || '{}');
+            const itemCategory = (itemFilters.category || '').toLowerCase();
+            const itemTitle = item.querySelector('.directory-01__title')?.textContent?.toLowerCase() || '';
+            const itemText = item.querySelector('.directory-01__text')?.textContent?.toLowerCase() || '';
+            
+            // Check if this item matches the category
+            const matchesCategory = 
+              itemCategory.includes(categoryLower) || 
+              itemTitle.includes(categoryLower) || 
+              itemText.includes(categoryLower);
+            
+            // Show/hide based on matching
+            item.style.display = matchesCategory ? 'block' : 'none';
+          } catch (e) {
+            console.error('Error filtering item:', e);
+          }
+        });
+        
+        // Update page heading
+        const heading = document.querySelector('.directory-01__heading');
+        if (heading) {
+          heading.textContent = 'Explore ' + displayCategory + ' Libraries';
+        }
+        
+        // Update subtitle
+        const subtitle = document.querySelector('.directory-01__subtitle');
+        if (subtitle) {
+          const categoryDescriptions = {
+            'web-scraping': 'Find the best Python libraries for extracting data from websites automatically. Perfect for data collection, monitoring, and web automation projects.',
+            'data-manipulation': 'Discover powerful Python libraries for cleaning, transforming, and processing data efficiently.',
+            'scientific-computing': 'Explore numerical and scientific computation tools for research and analysis.',
+            'deep-learning': 'Browse our collection of neural network frameworks for complex pattern recognition and feature learning.',
+            'machine-learning': 'Find the best tools for building predictive models and statistical analysis.',
+            'natural-language-processing': 'Discover libraries for processing and analyzing human language data.',
+            'computer-vision': 'Explore tools for image and video analysis, recognition, and processing.'
+          };
+          
+          if (categoryDescriptions[categoryParam]) {
+            subtitle.innerHTML = categoryDescriptions[categoryParam];
+          }
+        }
+      }
+    }, 100);
+  }
+});
+</script>
 
 </body>
 </html>
