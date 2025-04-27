@@ -10,6 +10,15 @@
 /blog/unlocking-machine-learning-efficiency-with-alphapy-a-comprehensive-guide/* /unlocking-machine-learning-efficiency-with-alphapy-a-comprehensive-guide.html 200
 /blog/* /blog.html 200
 /libraries/* /libraries.html 200
-/* /index.html 200
+/categories/deep-learning/* /categories.html?category=deep-learning 200
+/categories/data-manipulation/* /categories.html?category=data-manipulation 200
+/categories/scientific-computing/* /categories.html?category=scientific-computing 200
+/categories/data-visualization/* /categories.html?category=data-visualization 200
+/categories/machine-learning/* /categories.html?category=machine-learning 200
+/categories/natural-language-processing/* /categories.html?category=natural-language-processing 200
+/categories/statistical-analysis/* /categories.html?category=statistical-analysis 200
+/categories/hyperparameter-optimization/* /categories.html?category=hyperparameter-optimization 200
 /categories/* /categories.html 200
-/tools/* /index.html 200
+/tools/* /tools.html 200
+/about/* /about.html 200
+/* /index.html 200
