@@ -1900,7 +1900,7 @@ window.unicornplatform.openPopup(&quot;popup-01-57905&quot;)"
 <script src="category_script.js"></script>
 
 <script>
-// Additional initialization to ensure proper category loading
+// Static data approach for Netlify hosting
 document.addEventListener('DOMContentLoaded', function() {
   // Function to get URL parameters
   function getUrlParameter(name) {
@@ -1909,73 +1909,282 @@ document.addEventListener('DOMContentLoaded', function() {
     var results = regex.exec(location.search);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   }
+
+  // Function to fetch and process the library data
+  async function fetchLibraryData() {
+    try {
+      const response = await fetch('/library-data.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error loading library data:', error);
+      // Fallback if the JSON file can't be loaded
+      return {
+        categories: {
+          'deep-learning': {
+            name: 'Deep Learning',
+            description: 'Neural network frameworks for complex pattern recognition and feature learning.'
+          },
+          'web-scraping': {
+            name: 'Web Scraping',
+            description: 'Tools for extracting data from websites automatically.'
+          },
+          'data-manipulation': {
+            name: 'Data Manipulation',
+            description: 'Libraries for cleaning, transforming, and processing data efficiently.'
+          },
+          'scientific-computing': {
+            name: 'Scientific Computing',
+            description: 'Numerical and scientific computation tools for research and analysis.'
+          }
+        },
+        items: [
+          {
+            title: 'TensorFlow',
+            text: 'TensorFlow makes it easy to create ML models that can run in any environment.',
+            rank: '190000',
+            page: 'tensorflow',
+            category: 'Deep Learning; Neural Network Framework'
+          },
+          {
+            title: 'Beautiful Soup',
+            text: 'A Python library for extracting data from HTML and XML files.',
+            category: 'Web Scraping; Data Extraction'
+          }
+        ]
+      };
+    }
+  }
+
+  // Get path segments to check for direct category URLs (e.g., /categories/web-scraping/)
+  const pathSegments = window.location.pathname.split('/').filter(segment => segment);
+  let categoryFromPath = '';
   
-  // Get category from URL parameter
-  const categoryParam = getUrlParameter('category');
+  if (pathSegments.length >= 2 && pathSegments[0] === 'categories') {
+    categoryFromPath = pathSegments[1];
+  }
   
+  // Get category from URL parameter as fallback
+  const categoryParam = categoryFromPath || getUrlParameter('category');
+  
+  // Load the library data and filter by category
   if (categoryParam) {
-    // Wait for directory to load
-    const waitForDirectoryLoad = setInterval(function() {
-      if (!document.querySelector('.directory-01').classList.contains('dir-is-loading')) {
-        clearInterval(waitForDirectoryLoad);
-        
-        // Get all directory items
-        const items = document.querySelectorAll('.directory-item-parent');
-        
-        // Get the display category format
-        const displayCategory = categoryParam.split('-')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
-        
-        const categoryLower = displayCategory.toLowerCase();
-        
-        // Filter items based on category
-        items.forEach(item => {
-          try {
-            // Get item data
-            const itemFilters = JSON.parse(item.dataset.filters || '{}');
-            const itemCategory = (itemFilters.category || '').toLowerCase();
-            const itemTitle = item.querySelector('.directory-01__title')?.textContent?.toLowerCase() || '';
-            const itemText = item.querySelector('.directory-01__text')?.textContent?.toLowerCase() || '';
-            
-            // Check if this item matches the category
-            const matchesCategory = 
-              itemCategory.includes(categoryLower) || 
-              itemTitle.includes(categoryLower) || 
-              itemText.includes(categoryLower);
-            
-            // Show/hide based on matching
-            item.style.display = matchesCategory ? 'block' : 'none';
-          } catch (e) {
-            console.error('Error filtering item:', e);
-          }
-        });
-        
-        // Update page heading
-        const heading = document.querySelector('.directory-01__heading');
-        if (heading) {
-          heading.textContent = 'Explore ' + displayCategory + ' Libraries';
-        }
-        
-        // Update subtitle
-        const subtitle = document.querySelector('.directory-01__subtitle');
-        if (subtitle) {
-          const categoryDescriptions = {
-            'web-scraping': 'Find the best Python libraries for extracting data from websites automatically. Perfect for data collection, monitoring, and web automation projects.',
-            'data-manipulation': 'Discover powerful Python libraries for cleaning, transforming, and processing data efficiently.',
-            'scientific-computing': 'Explore numerical and scientific computation tools for research and analysis.',
-            'deep-learning': 'Browse our collection of neural network frameworks for complex pattern recognition and feature learning.',
-            'machine-learning': 'Find the best tools for building predictive models and statistical analysis.',
-            'natural-language-processing': 'Discover libraries for processing and analyzing human language data.',
-            'computer-vision': 'Explore tools for image and video analysis, recognition, and processing.'
-          };
-          
-          if (categoryDescriptions[categoryParam]) {
-            subtitle.innerHTML = categoryDescriptions[categoryParam];
-          }
-        }
+    // Start by clearing the loading indicator to show content is being processed
+    setTimeout(() => {
+      const loadingIndicator = document.querySelector('.directory-01__items');
+      if (loadingIndicator && loadingIndicator.textContent.trim() === 'Loading...') {
+        loadingIndicator.innerHTML = '<li>Processing category data...</li>';
       }
     }, 100);
+    
+    fetchLibraryData().then(data => {
+      if (!data || !data.categories || !data.items) {
+        console.error('Invalid data format!');
+        return;
+      }
+      
+      const categories = data.categories;
+      const allItems = data.items;
+      
+      // If a category is specified, filter items by that category
+      if (categories[categoryParam]) {
+        const category = categories[categoryParam];
+        console.log('Filtering by category:', category.name);
+        
+        // Update page title and heading
+        document.title = category.name + " - AI Python Libraries";
+        
+        // Set heading
+        const heading = document.querySelector('.directory-01__heading');
+        if (heading) {
+          heading.textContent = 'Explore ' + category.name + ' Libraries';
+        }
+        
+        // Set subtitle
+        const subtitle = document.querySelector('.directory-01__subtitle');
+        if (subtitle) {
+          subtitle.textContent = category.description;
+        }
+        
+        // Clear existing items
+        const itemsList = document.querySelector('.directory-01__items');
+        if (itemsList) {
+          itemsList.innerHTML = '';
+          
+          // Filter and append items for this category
+          const categoryLower = category.name.toLowerCase();
+          const filteredItems = allItems.filter(item => {
+            return item.category.toLowerCase().includes(categoryLower) || 
+                   (categoryParam === 'web-scraping' && 
+                    (item.category.toLowerCase().includes('scraping') || 
+                     item.category.toLowerCase().includes('web mining')));
+          });
+          
+          console.log('Found filtered items:', filteredItems.length);
+          
+          // Create and append the filtered items
+          filteredItems.forEach(item => {
+            const itemElement = document.createElement('li');
+            itemElement.className = 'directory-item-parent';
+            itemElement.dataset.filters = JSON.stringify({category: item.category});
+            
+            itemElement.innerHTML = `
+              <div class="directory-01__item card-container sc-br-0_5">
+                <a target="_blank" href="https://aipythonlibraries.com/tools/${item.page || item.title.toLowerCase()}">
+                  <div class="directory-01__title-box">
+                    <h3 class="title-text--inner directory-01__title def-16">${item.title}</h3>
+                    <div class="directory-01__rating">
+                      <span class="directory-01__rating-text content-text def-14">${item.rank || ''}</span>
+                      <svg viewBox="0 0 16 16" height="16" width="16" class="directory-01__rating-icon">
+                        <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="directory-01__text content_box content-text def-14">
+                    <p>${item.text}</p>
+                  </div>
+                </a>
+              </div>
+            `;
+            
+            itemsList.appendChild(itemElement);
+          });
+          
+          // Show no results placeholder if needed
+          const placeholder = document.querySelector('.directory-01__not-found-placeholder-container');
+          if (placeholder) {
+            placeholder.style.display = filteredItems.length > 0 ? 'none' : 'flex';
+          }
+          
+          // Hide loading indicator
+          document.querySelector('.directory-01').classList.remove('dir-is-loading');
+          
+          // Update search placeholder
+          const searchInput = document.querySelector('.directory-01__search-input');
+          if (searchInput) {
+            searchInput.placeholder = `Search among ${filteredItems.length} items`;
+            searchInput.disabled = false;
+          }
+        }
+      } else {
+        console.error('Category not found:', categoryParam);
+      }
+    });
+  }
+});
+</script>
+
+<script>
+// Compatibility enhancement for Google Sheets data after Netlify migration
+document.addEventListener('DOMContentLoaded', function() {
+  // Preserve the CMS URL data sources
+  const directory = document.querySelector('.directory-01');
+  if (directory) {
+    const originalCmsUrl = directory.getAttribute('data-cmsurl');
+    console.log('Using data source:', originalCmsUrl);
+    
+    // Function to get URL parameters
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+    
+    // Check if we're on a category page
+    const pathSegments = window.location.pathname.split('/').filter(segment => segment);
+    let categoryFromPath = '';
+    
+    if (pathSegments.length >= 2 && pathSegments[0] === 'categories') {
+      categoryFromPath = pathSegments[1];
+    }
+    
+    // Get category from URL parameter as fallback
+    const categoryParam = categoryFromPath || getUrlParameter('category');
+    
+    if (categoryParam) {
+      // Convert from url format to display format (e.g., deep-learning -> Deep Learning)
+      const displayCategory = categoryParam.split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      
+      // Update the heading to show the category
+      const heading = document.querySelector('.directory-01__heading');
+      if (heading) {
+        heading.textContent = 'Explore ' + displayCategory + ' Libraries';
+      }
+      
+      // Update subtitle based on category
+      const subtitle = document.querySelector('.directory-01__subtitle');
+      if (subtitle) {
+        const categoryDescriptions = {
+          'deep-learning': 'Neural network frameworks for complex pattern recognition and feature learning. Used in image/speech recognition and autonomous systems.',
+          'web-scraping': 'Tools for extracting data from websites automatically. Used for data collection, monitoring, and automation.',
+          'data-manipulation': 'Libraries for cleaning, transforming, and processing data efficiently.',
+          'scientific-computing': 'Numerical and scientific computation tools for research and analysis.',
+          'machine-learning': 'Tools for building predictive models and statistical analysis.',
+          'natural-language-processing': 'Libraries for processing and analyzing human language data.',
+          'computer-vision': 'Tools for image and video analysis, recognition, and processing.',
+          'data-visualization': 'Libraries for creating interactive and informative visual representations of data.',
+          'statistical-analysis': 'Tools for statistical analysis, hypothesis testing, and data modeling.',
+          'machine-learning-gradient-boosting': 'Specialized algorithms for predictive modeling using gradient boosting techniques.',
+          'hyperparameter-optimization': 'Tools for automatically tuning machine learning model parameters.',
+          'neural-networks': 'Libraries focused on neural network architectures and training.',
+          'distributed-computing': 'Frameworks for running computations across multiple machines or processors.',
+          'big-data-processing': 'Tools designed for handling and processing large-scale datasets.',
+          'experiment-tracking': 'Libraries for tracking, comparing, and managing machine learning experiments.'
+        };
+        
+        if (categoryDescriptions[categoryParam]) {
+          subtitle.innerHTML = categoryDescriptions[categoryParam];
+        } else {
+          subtitle.innerHTML = 'Libraries for ' + displayCategory.toLowerCase() + ' in Python. Find the right tools for your AI project.';
+        }
+      }
+      
+      // Make sure the directory component knows we want to filter by this category
+      // This is a backup in case the main filtering doesn't work
+      setTimeout(function() {
+        // Clear loading state if still present
+        directory.classList.remove('dir-is-loading');
+        
+        // Force filtering after a delay
+        setTimeout(function() {
+          const directoryItems = document.querySelectorAll('.directory-item-parent');
+          const categoryLower = displayCategory.toLowerCase();
+          
+          directoryItems.forEach(item => {
+            try {
+              let itemFilters = '';
+              if (item.dataset.filters) {
+                itemFilters = item.dataset.filters.toLowerCase();
+              }
+              
+              const itemTitle = item.querySelector('.directory-01__title')?.textContent?.toLowerCase() || '';
+              const itemText = item.querySelector('.directory-01__text')?.textContent?.toLowerCase() || '';
+              
+              const matchesCategory = 
+                itemFilters.includes(categoryLower) || 
+                itemTitle.includes(categoryLower) || 
+                itemText.includes(categoryLower) ||
+                (categoryParam === 'web-scraping' && (
+                  itemText.includes('scraping') || 
+                  itemText.includes('web mining') || 
+                  itemText.includes('extraction')
+                ));
+              
+              item.style.display = matchesCategory ? 'block' : 'none';
+              
+            } catch (e) {
+              console.error('Error filtering item:', e);
+            }
+          });
+        }, 1500);
+        
+      }, 1000);
+    }
   }
 });
 </script>
