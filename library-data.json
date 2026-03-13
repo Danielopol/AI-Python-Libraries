@@ -410,7 +410,7 @@
     },
     {
       "id": 69,
-      "slugified_title": "vector-similarity-search",
+      "slugified_title": "vector-similarity-search-ann",
       "title": "Vector Similarity Search (ANN)",
       "text": "Libraries for Approximate Nearest Neighbor Search and Vector Indexing/Similarity Search."
     },
@@ -866,7 +866,7 @@
     {
       "id": 42,
       "title": "polyglot",
-      "text": "Polyglot is similar to spaCy \u2013 it\u2019s very efficient, straightforward, and an excellent choice for projects involving a language spaCy doesn\u2019t support. The library also stands out from the crowd because it requests a dedicated command in the command line through the pipeline mechanisms\u2014worth a try.",
+      "text": "Polyglot is similar to spaCy – it’s very efficient, straightforward, and an excellent choice for projects involving a language spaCy doesn’t support. The library also stands out from the crowd because it requests a dedicated command in the command line through the pipeline mechanisms—worth a try.",
       "category": "Natural Language Processing; Text Data & NLP",
       "url": "https://polyglot.readthedocs.io/en/latest/",
       "rank": "2300",
@@ -902,7 +902,7 @@
     {
       "id": 46,
       "title": "JAX",
-      "text": "JAX is a library for array-oriented numerical computation (\u00e0 la NumPy), with automatic differentiation and JIT compilation to enable high-performance machine learning research.",
+      "text": "JAX is a library for array-oriented numerical computation (à la NumPy), with automatic differentiation and JIT compilation to enable high-performance machine learning research.",
       "category": "Machine Learning Frameworks; Generative AI",
       "url": "https://jax.readthedocs.io/en/latest/quickstart.html",
       "rank": "31000",
@@ -947,7 +947,7 @@
     {
       "id": 51,
       "title": "Caffe2",
-      "text": "Caffe2 is a deep learning framework that provides an easy and straightforward way for you to experiment with deep learning and leverage community contributions of new models and algorithms. You can bring your creations to scale using the power of GPUs in the cloud or to the masses on mobile with Caffe2\u2019s cross-platform libraries.",
+      "text": "Caffe2 is a deep learning framework that provides an easy and straightforward way for you to experiment with deep learning and leverage community contributions of new models and algorithms. You can bring your creations to scale using the power of GPUs in the cloud or to the masses on mobile with Caffe2’s cross-platform libraries.",
       "category": "Deep Learning Frameworks",
       "url": "https://caffe2.ai/docs/getting-started.html?platform=windows&configuration=compile",
       "rank": "",
@@ -1019,7 +1019,7 @@
     {
       "id": 59,
       "title": "Pillow",
-      "text": "The Python Imaging Library adds image processing capabilities to your Python interpreter. It\u2019s a friendly fork of the Python Imaging Library (PIL).",
+      "text": "The Python Imaging Library adds image processing capabilities to your Python interpreter. It’s a friendly fork of the Python Imaging Library (PIL).",
       "category": "Computer Vision; Image Data",
       "url": "https://pillow.readthedocs.io/en/stable/",
       "rank": "12000",
@@ -1046,7 +1046,7 @@
     {
       "id": 62,
       "title": "Streamlit",
-      "text": "Streamlit turns data scripts into shareable web apps in minutes. All in pure Python. No front\u2011end experience required.",
+      "text": "Streamlit turns data scripts into shareable web apps in minutes. All in pure Python. No front‑end experience required.",
       "category": "Web Development",
       "url": "https://streamlit.io/",
       "rank": "36000",
@@ -1118,7 +1118,7 @@
     {
       "id": 70,
       "title": "PyCLIPS",
-      "text": "PyCLIPS provides an inference engine to Python applications. It provides a rules-based engine as binary modules inside the library that are accessed using classes and functions. The engine itself stays \u201calive\u201d in a separate memory space to the Python space, so inferences and rules are persisted as your program grows in functionality.",
+      "text": "PyCLIPS provides an inference engine to Python applications. It provides a rules-based engine as binary modules inside the library that are accessed using classes and functions. The engine itself stays “alive” in a separate memory space to the Python space, so inferences and rules are persisted as your program grows in functionality.",
       "category": "Expert Systems",
       "url": "https://pypi.org/project/pyclips/",
       "rank": "",
@@ -1297,93 +1297,93 @@
     },
     {
       "id": 90,
-      "title": "Ray \u00a0",
-      "text": "A high-performance distributed execution framework that makes it easy to scale applications across clusters. \u00a0",
-      "category": "Distributed Computing \u00a0",
+      "title": "Ray",
+      "text": "A high-performance distributed execution framework that makes it easy to scale applications across clusters.",
+      "category": "Distributed Computing",
       "url": "https://www.ray.io/",
       "rank": "",
-      "page": "ray \u00a0"
+      "page": "ray"
     },
     {
       "id": 91,
-      "title": "Horovod \u00a0",
-      "text": "A distributed deep learning training framework that makes it easy to scale TensorFlow and PyTorch models. \u00a0",
+      "title": "Horovod",
+      "text": "A distributed deep learning training framework that makes it easy to scale TensorFlow and PyTorch models.",
       "category": "Distributed Deep Learning",
       "url": "https://horovod.readthedocs.io/en/stable/",
       "rank": "",
-      "page": "horovod \u00a0"
+      "page": "horovod"
     },
     {
       "id": 92,
-      "title": "Pygame \u00a0",
-      "text": "A set of Python modules designed for writing video games, useful for AI in game development. \u00a0",
-      "category": "Game Development \u00a0",
+      "title": "Pygame",
+      "text": "A set of Python modules designed for writing video games, useful for AI in game development.",
+      "category": "Game Development",
       "url": "https://www.pygame.org/wiki/about",
       "rank": "",
-      "page": "pygame \u00a0"
+      "page": "pygame"
     },
     {
       "id": 93,
-      "title": "TensorFlow Probability \u00a0",
-      "text": "A library for probabilistic reasoning and statistical analysis in TensorFlow. \u00a0",
-      "category": "Probabilistic Modeling \u00a0",
+      "title": "TensorFlow Probability",
+      "text": "A library for probabilistic reasoning and statistical analysis in TensorFlow.",
+      "category": "Probabilistic Modeling",
       "url": "https://www.tensorflow.org/probability",
       "rank": "",
-      "page": "tensorflow probability \u00a0"
+      "page": "tensorflow probability"
     },
     {
       "id": 94,
-      "title": "Stable Baselines3 \u00a0",
-      "text": "A set of reliable implementations of reinforcement learning algorithms based on PyTorch. \u00a0",
-      "category": "Reinforcement Learning \u00a0",
+      "title": "Stable Baselines3",
+      "text": "A set of reliable implementations of reinforcement learning algorithms based on PyTorch.",
+      "category": "Reinforcement Learning",
       "url": "https://stable-baselines3.readthedocs.io/en/master/",
       "rank": "",
-      "page": "stable baselines3 \u00a0"
+      "page": "stable baselines3"
     },
     {
       "id": 95,
-      "title": "Rasa \u00a0",
-      "text": "An open-source machine learning framework for building contextual AI assistants and chatbots. \u00a0",
-      "category": "Natural Language Processing; Chatbots \u00a0",
+      "title": "Rasa",
+      "text": "An open-source machine learning framework for building contextual AI assistants and chatbots.",
+      "category": "Natural Language Processing; Chatbots",
       "url": "https://rasa.com/",
       "rank": "",
-      "page": "rasa \u00a0"
+      "page": "rasa"
     },
     {
       "id": 96,
-      "title": "AllenNLP \u00a0",
-      "text": "An open-source NLP research library built on PyTorch focused on deep learning models for NLP tasks. \u00a0",
-      "category": "Natural Language Processing \u00a0",
+      "title": "AllenNLP",
+      "text": "An open-source NLP research library built on PyTorch focused on deep learning models for NLP tasks.",
+      "category": "Natural Language Processing",
       "url": "https://github.com/allenai/allennlp",
       "rank": "",
-      "page": "allennlp \u00a0"
+      "page": "allennlp"
     },
     {
       "id": 97,
-      "title": "Fairseq \u00a0",
-      "text": "A sequence-to-sequence learning toolkit for training custom models on various tasks in NLP. \u00a0\u00a0\u00a0\u00a0",
-      "category": "Natural Language Processing \u00a0\u00a0\u00a0\u00a0",
+      "title": "Fairseq",
+      "text": "A sequence-to-sequence learning toolkit for training custom models on various tasks in NLP.",
+      "category": "Natural Language Processing",
       "url": "https://fairseq.readthedocs.io/en/latest/",
       "rank": "",
-      "page": "fairseq \u00a0"
+      "page": "fairseq"
     },
     {
       "id": 98,
-      "title": "DeepPavlov \u00a0\u00a0\u00a0\u00a0",
-      "text": "An open-source library for building conversational AI systems with various pre-trained models. \u00a0\u00a0\u00a0\u00a0",
-      "category": "Natural Language Processing; Chatbots \u00a0\u00a0\u00a0\u00a0",
+      "title": "DeepPavlov",
+      "text": "An open-source library for building conversational AI systems with various pre-trained models.",
+      "category": "Natural Language Processing; Chatbots",
       "url": "https://docs.deeppavlov.ai/en/master/",
       "rank": "",
-      "page": "deeppavlov \u00a0\u00a0\u00a0\u00a0"
+      "page": "deeppavlov"
     },
     {
       "id": 99,
-      "title": "FastText \u00a0\u00a0\u00a0\u00a0\u00a0",
-      "text": "A library for efficient text classification and representation learning developed by Facebook AI Research. \u00a0\u00a0\u00a0\u00a0\u00a0",
-      "category": "Natural Language Processing \u00a0\u00a0\u00a0\u00a0\u00a0",
+      "title": "FastText",
+      "text": "A library for efficient text classification and representation learning developed by Facebook AI Research.",
+      "category": "Natural Language Processing",
       "url": "https://fasttext.cc/",
       "rank": "",
-      "page": "fasttext \u00a0\u00a0\u00a0\u00a0\u00a0"
+      "page": "fasttext"
     },
     {
       "id": 100,
@@ -1676,7 +1676,7 @@
     {
       "id": 132,
       "title": "Haystack",
-      "text": "Haystack is an open source framework for building production-ready LLM applications, retrieval-augmented generative pipelines and state-of-the-art search systems that work intelligently over large document collections. ",
+      "text": "Haystack is an open source framework for building production-ready LLM applications, retrieval-augmented generative pipelines and state-of-the-art search systems that work intelligently over large document collections.",
       "category": "Natural Language Processing; Text Data & NLP",
       "url": "https://haystack.deepset.ai/overview/intro",
       "rank": "18000",
@@ -1693,7 +1693,7 @@
     },
     {
       "id": 134,
-      "title": "MindsDB ",
+      "title": "MindsDB",
       "text": "An open-source tool to build AI models directly in databases using SQL queries.",
       "category": "Machine Learning Frameworks",
       "url": "https://mindsdb.com/",
@@ -1720,12 +1720,12 @@
     },
     {
       "id": 137,
-      "title": "Triton ",
+      "title": "Triton",
       "text": "A programming language and compiler designed to make writing high-performance GPU code easier.",
       "category": "Deep Learning; Model Serialization & Deployment",
       "url": "https://openai.com/index/triton/",
       "rank": "14000",
-      "page": "Triton "
+      "page": "Triton"
     },
     {
       "id": 138,
@@ -1738,12 +1738,12 @@
     },
     {
       "id": 139,
-      "title": "CausalML ",
+      "title": "CausalML",
       "text": "A Python package that implements causal inference algorithms for machine learning tasks.",
       "category": "Machine Learning Frameworks",
       "url": "https://causalml.readthedocs.io/en/latest/",
       "rank": "5200",
-      "page": "CausalML "
+      "page": "CausalML"
     },
     {
       "id": 140,
@@ -1756,12 +1756,12 @@
     },
     {
       "id": 141,
-      "title": "PyMC3 ",
+      "title": "PyMC3",
       "text": "A probabilistic programming framework that allows users to build Bayesian models using Markov chain Monte Carlo methods.",
       "category": "Deep Learning; Probabilistic Programming; Probabilistics & Statistics",
       "url": "https://www.pymc.io/projects/docs/en/stable/learn.html",
       "rank": "8800",
-      "page": "PyMC3 "
+      "page": "PyMC3"
     },
     {
       "id": 142,
@@ -1774,30 +1774,30 @@
     },
     {
       "id": 143,
-      "title": "CausalInference ",
+      "title": "CausalInference",
       "text": "A package designed for causal inference analysis using statistical methods in Python.",
       "category": "Deep Learning",
       "url": "https://pypi.org/project/CausalInference/",
       "rank": "",
-      "page": "CausalInference "
+      "page": "CausalInference"
     },
     {
       "id": 144,
-      "title": "Lifelines ",
+      "title": "Lifelines",
       "text": "A survival analysis library that provides tools to analyze time-to-event data.",
       "category": "Deep Learning; Medical Data",
       "url": "https://lifelines.readthedocs.io/en/stable/",
       "rank": "2400",
-      "page": "Lifelines "
+      "page": "Lifelines"
     },
     {
       "id": 145,
-      "title": "NeuralProphet ",
+      "title": "NeuralProphet",
       "text": "A forecasting tool based on Facebook's Prophet with neural network capabilities.",
       "category": "Neural Networks;Deep Learning; Time Series Data",
       "url": "https://neuralprophet.com/",
       "rank": "3900",
-      "page": "NeuralProphet "
+      "page": "NeuralProphet"
     },
     {
       "id": 146,
@@ -1837,12 +1837,12 @@
     },
     {
       "id": 150,
-      "title": "Fairlearn ",
+      "title": "Fairlearn",
       "text": "A toolkit that helps assess and improve fairness in machine learning models.",
       "category": "Machine Learning Frameworks; Explainable AI; Model Interpretability",
       "url": "https://fairlearn.org/",
       "rank": "2000",
-      "page": "Fairlearn "
+      "page": "Fairlearn"
     },
     {
       "id": 151,
@@ -1873,39 +1873,39 @@
     },
     {
       "id": 154,
-      "title": "Lightwood ",
+      "title": "Lightwood",
       "text": "An automated machine learning framework that simplifies the ML workflow, focusing on ease of use.",
       "category": "Machine Learning; Hyperparameter Optimization & AutoML",
       "url": "https://pypi.org/project/lightwood/0.12.2/",
       "rank": "460",
-      "page": "Lightwood "
+      "page": "Lightwood"
     },
     {
       "id": 155,
-      "title": "SymPy ",
+      "title": "SymPy",
       "text": "SymPy is a Python library for symbolic mathematics. It aims to become a full-featured computer algebra system (CAS) while keeping the code as simple as possible in order to be comprehensible and easily extensible. SymPy is written entirely in Python.",
       "category": "Scientific Computing; Numerical Processing",
       "url": "https://www.sympy.org/en/index.html",
       "rank": "13000",
-      "page": "SymPy "
+      "page": "SymPy"
     },
     {
       "id": 156,
-      "title": "CuPy ",
+      "title": "CuPy",
       "text": "CuPy is an open-source array library for GPU-accelerated computing with Python. CuPy utilizes CUDA Toolkit libraries including cuBLAS, cuRAND, cuSOLVER, cuSPARSE, cuFFT, cuDNN and NCCL to make full use of the GPU architecture",
       "category": "Scientific Computing; Numerical Processing; GPU & Accelerator Utilities",
       "url": "https://cupy.dev/",
       "rank": "9700",
-      "page": "CuPy "
+      "page": "CuPy"
     },
     {
       "id": 157,
-      "title": "NumExpr ",
+      "title": "NumExpr",
       "text": "A fast numerical expression evaluator for NumPy arrays.",
       "category": "Scientific Computing; Numerical Processing",
       "url": "https://numexpr.readthedocs.io/en/latest/",
       "rank": "",
-      "page": "NumExpr "
+      "page": "NumExpr"
     },
     {
       "id": 158,
@@ -1918,21 +1918,21 @@
     },
     {
       "id": 159,
-      "title": "Surprise  ",
+      "title": "Surprise",
       "text": "Surprise is a Python scikit for building and analyzing recommender systems that deal with explicit rating data.",
       "category": "Machine Learning Frameworks",
       "url": "https://surpriselib.com/",
       "rank": "",
-      "page": "Surprise  "
+      "page": "Surprise"
     },
     {
       "id": 160,
-      "title": "Shogun  ",
+      "title": "Shogun",
       "text": "An open-source machine learning library providing a unified interface to various algorithms.",
       "category": "Machine Learning Frameworks",
       "url": "https://www.shogun-toolbox.org/",
       "rank": "3000",
-      "page": "Shogun  "
+      "page": "Shogun"
     },
     {
       "id": 161,
@@ -1945,21 +1945,21 @@
     },
     {
       "id": 162,
-      "title": "StanfordNLP ",
+      "title": "StanfordNLP",
       "text": "A suite of tools for natural language processing developed by Stanford University.",
       "category": "Natural Language Processing",
       "url": "https://stanfordnlp.github.io/stanfordnlp/",
       "rank": "",
-      "page": "StanfordNLP "
+      "page": "StanfordNLP"
     },
     {
       "id": 163,
-      "title": "Flair ",
+      "title": "Flair",
       "text": "A simple NLP framework built on top of PyTorch that allows you to apply state-of-the-art natural language processing techniques easily.",
       "category": "Natural Language Processing; Text Data & NLP",
       "url": "https://flairnlp.github.io/flair/",
       "rank": "14000",
-      "page": "Flair "
+      "page": "Flair"
     },
     {
       "id": 164,
@@ -2008,17 +2008,17 @@
     },
     {
       "id": 169,
-      "title": "Albumentations ",
+      "title": "Albumentations",
       "text": "Albumentations is a computer vision tool that boosts the performance of deep convolutional neural networks.",
       "category": "Computer Vision; Image Data",
       "url": "https://albumentations.ai/",
       "rank": "14000",
-      "page": "albumentations "
+      "page": "albumentations"
     },
     {
       "id": 170,
       "title": "Gymnasium",
-      "text": "Gymnasium is a maintained fork of OpenAI\u2019s Gym library. The Gymnasium interface is simple, pythonic, and capable of representing general RL problems, and has a compatibility wrapper for old Gym environments",
+      "text": "Gymnasium is a maintained fork of OpenAI’s Gym library. The Gymnasium interface is simple, pythonic, and capable of representing general RL problems, and has a compatibility wrapper for old Gym environments",
       "category": "Reinforcement Learning",
       "url": "https://gymnasium.farama.org/",
       "rank": "",
@@ -2053,12 +2053,12 @@
     },
     {
       "id": 174,
-      "title": "TensorBoard ",
+      "title": "TensorBoard",
       "text": "TensorBoard is a tool for providing the measurements and visualizations needed during the machine learning workflow. It enables tracking experiment metrics like loss and accuracy, visualizing the model graph, projecting embeddings to a lower dimensional space, and much more.",
       "category": "Neural Network Visualization;Workflow & Experiment Tracking",
       "url": "https://www.tensorflow.org/tensorboard/get_started",
       "rank": "6800",
-      "page": "TensorBoard "
+      "page": "TensorBoard"
     },
     {
       "id": 175,
@@ -2107,7 +2107,7 @@
     },
     {
       "id": 180,
-      "title": "NEURON ",
+      "title": "NEURON",
       "text": "NEURON is a simulator for models of neurons and networks of neuron. See http://neuron.yale.edu for installers, source code, documentation, tutorials, announcements of courses and conferences, and a discussion forum.",
       "category": "Neural Network Visualization",
       "url": "https://pypi.org/project/NEURON/",
@@ -2153,7 +2153,7 @@
     {
       "id": 185,
       "title": "PyFlux",
-      "text": "PyFlux is a library for time series analysis and prediction. Users can choose from a flexible range of modelling and inference options, and use the output for forecasting and retrospection. ",
+      "text": "PyFlux is a library for time series analysis and prediction. Users can choose from a flexible range of modelling and inference options, and use the output for forecasting and retrospection.",
       "category": "Time Series Analysis; Time Series Data",
       "url": "https://pyflux.readthedocs.io/en/latest/",
       "rank": "2100",
@@ -2189,7 +2189,7 @@
     {
       "id": 189,
       "title": "Edward",
-      "text": "Edward is a Python library for probabilistic modeling, inference, and criticism. It is a testbed for fast experimentation and research with probabilistic models, ranging from classical hierarchical models on small data sets to complex deep probabilistic models on large data sets. ",
+      "text": "Edward is a Python library for probabilistic modeling, inference, and criticism. It is a testbed for fast experimentation and research with probabilistic models, ranging from classical hierarchical models on small data sets to complex deep probabilistic models on large data sets.",
       "category": "Probabilistic Programming; Probabilistics & Statistics",
       "url": "https://edwardlib.org/",
       "rank": "4800",
@@ -2198,7 +2198,7 @@
     {
       "id": 190,
       "title": "Pyro",
-      "text": "Pyro is a universal probabilistic programming language (PPL) written in Python and supported by PyTorch on the backend. Pyro enables flexible and expressive deep probabilistic modeling, unifying the best of modern deep learning and Bayesian modeling. ",
+      "text": "Pyro is a universal probabilistic programming language (PPL) written in Python and supported by PyTorch on the backend. Pyro enables flexible and expressive deep probabilistic modeling, unifying the best of modern deep learning and Bayesian modeling.",
       "category": "Probabilistic Programming; Probabilistics & Statistics",
       "url": "https://pyro.ai/",
       "rank": "8600",
@@ -2234,7 +2234,7 @@
     {
       "id": 194,
       "title": "Emcee",
-      "text": "emcee is an MIT licensed pure-Python implementation of Goodman & Weare\u2019s Affine Invariant Markov chain Monte Carlo (MCMC) Ensemble sampler and these pages will show you how to use it.",
+      "text": "emcee is an MIT licensed pure-Python implementation of Goodman & Weare’s Affine Invariant Markov chain Monte Carlo (MCMC) Ensemble sampler and these pages will show you how to use it.",
       "category": "Probabilistic Programming; Probabilistics & Statistics",
       "url": "https://emcee.readthedocs.io/en/stable/",
       "rank": "1500",
@@ -2243,7 +2243,7 @@
     {
       "id": 195,
       "title": "ZhuSuan",
-      "text": "ZhuSuan is a python probabilistic programming library for Bayesian deep learning, which conjoins the complimentary advantages of Bayesian methods and deep learning. ZhuSuan is built upon Tensorflow. ",
+      "text": "ZhuSuan is a python probabilistic programming library for Bayesian deep learning, which conjoins the complimentary advantages of Bayesian methods and deep learning. ZhuSuan is built upon Tensorflow.",
       "category": "Probabilistic Programming; Probabilistics & Statistics",
       "url": "https://zhusuan.readthedocs.io/en/latest/",
       "rank": "2200",
@@ -2296,66 +2296,66 @@
     },
     {
       "id": 201,
-      "title": "SpeechRecognition ",
+      "title": "SpeechRecognition",
       "text": "The SpeechRecognition library acts as a wrapper for several popular speech APIs and is thus extremely flexible.",
       "category": "Audio Processing",
       "url": "https://realpython.com/python-speech-recognition/",
       "rank": "8500",
-      "page": "SpeechRecognition "
+      "page": "SpeechRecognition"
     },
     {
       "id": 202,
-      "title": "PyDub ",
-      "text": "Simple audio manipulation capabilities including cutting, concatenating, or exporting different formats ",
+      "title": "PyDub",
+      "text": "Simple audio manipulation capabilities including cutting, concatenating, or exporting different formats",
       "category": "Audio Processing",
       "url": "https://pydub.com/",
       "rank": "9100",
-      "page": "PyDub "
+      "page": "PyDub"
     },
     {
       "id": 203,
-      "title": "Kaldi ",
+      "title": "Kaldi",
       "text": "Toolkit providing speech recognition capabilities through various features like GMM-HMM based systems",
       "category": "Audio Processing",
       "url": "https://kaldi-asr.org/",
       "rank": "",
-      "page": "Kaldi "
+      "page": "Kaldi"
     },
     {
       "id": 204,
-      "title": "LIME ",
+      "title": "LIME",
       "text": "Local Interpretable Model-Agnostic Explanations enabling users to interpret black-box models easily",
       "category": "Explainable AI; Model Interpretability",
       "url": "https://lime-ml.readthedocs.io/en/latest/",
       "rank": "12000",
-      "page": "LIME "
+      "page": "LIME"
     },
     {
       "id": 205,
-      "title": "Captum ",
+      "title": "Captum",
       "text": "Library providing model interpretability capabilities within PyTorch frameworks easily",
       "category": "Explainable AI; Model Interpretability",
       "url": "https://captum.ai/",
       "rank": "5000",
-      "page": "Captum "
+      "page": "Captum"
     },
     {
       "id": 206,
-      "title": "InterpretML ",
+      "title": "InterpretML",
       "text": "Model interpretability helps developers, data scientists and business stakeholders in the organization gain a comprehensive understanding of their machine learning models. It can also be used to debug models, explain predictions and enable auditing to meet compliance with regulatory requirements.",
       "category": "Explainable AI; Model Interpretability",
       "url": "https://interpret.ml/",
       "rank": "6300",
-      "page": "InterpretML "
+      "page": "InterpretML"
     },
     {
       "id": 207,
-      "title": "Alibi ",
+      "title": "Alibi",
       "text": "Alibi Explain is an open source Python library aimed at machine learning model inspection and interpretation. The focus of the library is to provide high-quality implementations of black-box, white-box, local and global explanation methods for classification and regression models.",
       "category": "Explainable AI; Model Interpretability",
       "url": "https://docs.seldon.io/projects/alibi/en/latest/",
       "rank": "2400",
-      "page": "Alibi "
+      "page": "Alibi"
     },
     {
       "id": 208,
@@ -2368,21 +2368,21 @@
     },
     {
       "id": 209,
-      "title": "AIX360 ",
+      "title": "AIX360",
       "text": "The AI Explainbability 360 toolkit is an open-source library that supports interpretability and explainability of data and machine learning models. The AI Explainability 360 Python package includes a comprehensive set of algorithms that cover different dimensions of explanations along with proxy explainability metrics.",
       "category": "Explainable AI",
       "url": "https://aix360.readthedocs.io/en/latest/",
       "rank": "",
-      "page": "AIX360 "
+      "page": "AIX360"
     },
     {
       "id": 210,
-      "title": "Aequitas ",
+      "title": "Aequitas",
       "text": "aequitas is an open-source bias auditing and Fair ML toolkit for data scientists, machine learning researchers, and policymakers.",
       "category": "Explainable AI; Model Interpretability",
       "url": "https://pypi.org/project/aequitas/",
       "rank": "700",
-      "page": "Aequitas "
+      "page": "Aequitas"
     },
     {
       "id": 211,
@@ -2432,7 +2432,7 @@
     {
       "id": 216,
       "title": "BreakDown",
-      "text": "Breakdown is a lightweight python webserver that parses jinja2 templates. It\u2019s intended to be used by designers for doing rapid prototyping.",
+      "text": "Breakdown is a lightweight python webserver that parses jinja2 templates. It’s intended to be used by designers for doing rapid prototyping.",
       "category": "Explainable AI; Machine Learning Frameworks",
       "url": "https://pypi.org/project/breakdown/",
       "rank": "",
@@ -2450,7 +2450,7 @@
     {
       "id": 218,
       "title": "Anchors",
-      "text": "This repository has code for the paper High-Precision Model-Agnostic Explanations.\nAn anchor explanation is a rule that sufficiently \u201canchors\u201d the prediction locally \u2013 such that changes to the rest of the feature values of the instance do not matter. In other words, for instances on which the anchor holds, the prediction is (almost) always the same.",
+      "text": "This repository has code for the paper High-Precision Model-Agnostic Explanations.\nAn anchor explanation is a rule that sufficiently “anchors” the prediction locally – such that changes to the rest of the feature values of the instance do not matter. In other words, for instances on which the anchor holds, the prediction is (almost) always the same.",
       "category": "Explainable AI; Machine Learning Frameworks",
       "url": "https://github.com/marcotcr/anchor",
       "rank": "",
@@ -2494,8 +2494,8 @@
     },
     {
       "id": 223,
-      "title": "OpenHands ",
-      "text": "OpenHands is a platform for software development agents powered by AI.\nOpenHands agents can do anything a human developer can: modify code, run commands, browse the web, call APIs, and yes\u2014even copy code snippets from StackOverflow.",
+      "title": "OpenHands",
+      "text": "OpenHands is a platform for software development agents powered by AI.\nOpenHands agents can do anything a human developer can: modify code, run commands, browse the web, call APIs, and yes—even copy code snippets from StackOverflow.",
       "category": "AI Agents",
       "url": "https://www.all-hands.dev/",
       "rank": "",
@@ -2512,12 +2512,12 @@
     },
     {
       "id": 225,
-      "title": "LitServe ",
+      "title": "LitServe",
       "text": "Flexible, high-throughput serving engine for AI models.\nLitServe is a flexible serving engine for AI models built on FastAPI. Features like batching, streaming, and GPU autoscaling eliminate the need to rebuild a FastAPI server per model.",
       "category": "LLM; Machine Learning",
       "url": "https://lightning.ai/docs/litserve/home",
       "rank": "",
-      "page": "LitServe "
+      "page": "LitServe"
     },
     {
       "id": 226,
@@ -2531,7 +2531,7 @@
     {
       "id": 227,
       "title": "Docling",
-      "text": "Docling, an open-source marvel from IBM, streamlines the often-daunting process of parsing and extracting data from an array of document formats. Whether you\u2019re working with PDFs, DOCX files, Excel spreadsheets, or Markdown, Docling\u2019s robust parsing engine turns messy, unstructured files into clean, machine-readable formats.",
+      "text": "Docling, an open-source marvel from IBM, streamlines the often-daunting process of parsing and extracting data from an array of document formats. Whether you’re working with PDFs, DOCX files, Excel spreadsheets, or Markdown, Docling’s robust parsing engine turns messy, unstructured files into clean, machine-readable formats.",
       "category": "Data Processing; Generative AI",
       "url": "https://github.com/DS4SD/docling",
       "rank": "",
@@ -3683,7 +3683,7 @@
     {
       "id": 355,
       "title": "detoxify",
-      "text": "Trained models & code to predict toxic comments on all 3 Jigsaw Toxic Comment Challenges. Built using \u00e2\u0161\u00a1 Pytorch Lightning and \u00f0\u0178\u00a4\u2014 Transformers. For access to our API, please email us at contact@unitary.ai.",
+      "text": "Trained models & code to predict toxic comments on all 3 Jigsaw Toxic Comment Challenges. Built using âš¡ Pytorch Lightning and ðŸ¤— Transformers. For access to our API, please email us at contact@unitary.ai.",
       "category": "Text Data & NLP",
       "url": "https://www.unitary.ai/",
       "rank": "980",
@@ -4555,12 +4555,12 @@
     },
     {
       "id": 452,
-      "title": "DE\u00e2\u00ab\u00b6TR",
+      "title": "DEâ«¶TR",
       "text": "End-to-End Object Detection with Transformers",
       "category": "Image Data",
       "url": "https://github.com/facebookresearch/detr",
       "rank": "14000",
-      "page": "DE\u00e2\u00ab\u00b6TR"
+      "page": "DEâ«¶TR"
     },
     {
       "id": 453,
@@ -6041,7 +6041,7 @@
     {
       "id": 617,
       "title": "upgini",
-      "text": "Data search & enrichment library for Machine Learning \u00e2\u2020\u2019 Easily find and add relevant features to your ML & AI pipeline from hundreds of public and premium external data sources, including open & commercial LLMs",
+      "text": "Data search & enrichment library for Machine Learning â†’ Easily find and add relevant features to your ML & AI pipeline from hundreds of public and premium external data sources, including open & commercial LLMs",
       "category": "Tabular Data",
       "url": "https://upgini.com/",
       "rank": "320",
@@ -6923,7 +6923,7 @@
     {
       "id": 715,
       "title": "RLax",
-      "text": "RLax (pronounced \u201crelax\u201d) is a library built on top of JAX that exposes useful building blocks for implementing reinforcement learning agents.",
+      "text": "RLax (pronounced “relax”) is a library built on top of JAX that exposes useful building blocks for implementing reinforcement learning agents.",
       "category": "Reinforcement Learning",
       "url": "https://rlax.readthedocs.io/",
       "rank": "1300",
@@ -7436,7 +7436,7 @@
     {
       "id": 772,
       "title": "CometML",
-      "text": "Comet\u2019s machine learning platform integrates with your existing infrastructure and tools so you can manage, visualize, and optimize models\u2014from training runs to production monitoring.",
+      "text": "Comet’s machine learning platform integrates with your existing infrastructure and tools so you can manage, visualize, and optimize models—from training runs to production monitoring.",
       "category": "Workflow & Experiment Tracking",
       "url": "https://www.comet.com",
       "rank": "",
@@ -7769,7 +7769,7 @@
     {
       "id": 809,
       "title": "evaluate",
-      "text": "\u00f0\u0178\u00a4\u2014 Evaluate: A library for easily evaluating machine learning models and datasets.",
+      "text": "ðŸ¤— Evaluate: A library for easily evaluating machine learning models and datasets.",
       "category": "Model Interpretability",
       "url": "https://huggingface.co/docs/evaluate",
       "rank": "2100",
@@ -7832,7 +7832,7 @@
     {
       "id": 816,
       "title": "imodels",
-      "text": "Interpretable ML package \u00f0\u0178\u201d\u008d for concise, transparent, and accurate predictive modeling (sklearn-compatible).",
+      "text": "Interpretable ML package ðŸ” for concise, transparent, and accurate predictive modeling (sklearn-compatible).",
       "category": "Model Interpretability",
       "url": "https://csinva.io/imodels",
       "rank": "1400",
@@ -8165,7 +8165,7 @@
     {
       "id": 853,
       "title": "USearch",
-      "text": "Fast Open-Source Search & Clustering engine \u2014 for Vectors & Strings\u2014 in C++, C, Python, JavaScript, Rust, Java, Objective-C, Swift, C#, GoLang, and Wolfram",
+      "text": "Fast Open-Source Search & Clustering engine — for Vectors & Strings— in C++, C, Python, JavaScript, Rust, Java, Objective-C, Swift, C#, GoLang, and Wolfram",
       "category": "Vector Similarity Search (ANN)",
       "url": "https://unum-cloud.github.io/usearch/",
       "rank": "2400",
@@ -8444,7 +8444,7 @@
     {
       "id": 884,
       "title": "AdvBox",
-      "text": "Advbox is a toolbox to generate adversarial examples that fool neural networks in PaddlePaddle\u0081, PyTorch, \u0081Caffe2, \u0081MxNet, \u0081Keras, TensorFlow and Advbox can benchmark the robustness of machine learning models. Advbox give a command line tool to generate adversarial examples with Zero-Coding.",
+      "text": "Advbox is a toolbox to generate adversarial examples that fool neural networks in PaddlePaddle, PyTorch, Caffe2, MxNet, Keras, TensorFlow and Advbox can benchmark the robustness of machine learning models. Advbox give a command line tool to generate adversarial examples with Zero-Coding.",
       "category": "Adversarial Robustness",
       "url": "https://github.com/advboxes/AdvBox",
       "rank": "1400",
@@ -8480,7 +8480,7 @@
     {
       "id": 888,
       "title": "optimum",
-      "text": "Accelerate inference and training of \u2014 Transformers, Diffusers, TIMM and Sentence Transformers with easy to use hardware optimization tools",
+      "text": "Accelerate inference and training of — Transformers, Diffusers, TIMM and Sentence Transformers with easy to use hardware optimization tools",
       "category": "GPU & Accelerator Utilities",
       "url": "https://huggingface.co/docs/optimum/main/",
       "rank": "2600",
@@ -8894,7 +8894,7 @@
     {
       "id": 934,
       "title": "scikit-tda",
-      "text": "Topological Data Analysis for Python\u00f0\u0178\u0090\u008d",
+      "text": "Topological Data Analysis for PythonðŸ",
       "category": "Sklearn Utilities",
       "url": "https://docs.scikit-tda.org/",
       "rank": "530",
@@ -9830,7 +9830,7 @@
     {
       "id": 1038,
       "title": "PerpetualBooster",
-      "text": "PerpetualBooster is a gradient boosting machine (GBM) algorithm which doesn't need hyperparameter optimization unlike other GBM algorithms. Similar to AutoML libraries, it has a budget parameter. Increasing the budget parameter increases the predictive power of the algorithm and gives better results on unseen data. ",
+      "text": "PerpetualBooster is a gradient boosting machine (GBM) algorithm which doesn't need hyperparameter optimization unlike other GBM algorithms. Similar to AutoML libraries, it has a budget parameter. Increasing the budget parameter increases the predictive power of the algorithm and gives better results on unseen data.",
       "category": "Hyperparameter Optimization",
       "url": "https://perpetual-ml.com/",
       "rank": "383",
@@ -9848,7 +9848,7 @@
     {
       "id": 1040,
       "title": "Fastplotlib",
-      "text": "Next-gen fast plotting library running on WGPU using the pygfx rendering engine.\n\n",
+      "text": "Next-gen fast plotting library running on WGPU using the pygfx rendering engine.",
       "category": "Data Visualization",
       "url": "https://www.fastplotlib.org/ver/dev/",
       "rank": "492",
