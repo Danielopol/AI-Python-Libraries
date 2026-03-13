@@ -1899,18 +1899,13 @@ window.unicornplatform.openPopup(&quot;popup-01-57905&quot;)"
     }
 </style>
 
-<script src="/category_script.js"></script>
-
 <script src="/direct-loader.js"></script>
-<script src="/debug-helper.js"></script>
 
-<!-- Fallback: Inline loader -->
+<!-- Fallback: Inline loader (runs only if direct-loader.js fails to load) -->
 <script>
-// Fallback direct loader for AI Python Libraries
 document.addEventListener('DOMContentLoaded', function() {
-  // Only run if the external scripts failed to load
   if (window.categoryLoaderInitialized) return;
-  
+
   console.log('Using fallback inline loader');
   window.categoryLoaderInitialized = true;
   
@@ -2049,118 +2044,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script>
-// Compatibility enhancement for Google Sheets data after Netlify migration
-document.addEventListener('DOMContentLoaded', function() {
-  // Preserve the CMS URL data sources
-  const directory = document.querySelector('.directory-01');
-  if (directory) {
-    const originalCmsUrl = directory.getAttribute('data-cmsurl');
-    console.log('Using data source:', originalCmsUrl);
-    
-    // Function to get URL parameters
-    function getUrlParameter(name) {
-      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-      var results = regex.exec(location.search);
-      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-    
-    // Check if we're on a category page
-    const pathSegments = window.location.pathname.split('/').filter(segment => segment);
-    let categoryFromPath = '';
-    
-    if (pathSegments.length >= 2 && pathSegments[0] === 'categories') {
-      categoryFromPath = pathSegments[1];
-    }
-    
-    // Get category from URL parameter as fallback
-    const categoryParam = categoryFromPath || getUrlParameter('category');
-    
-    if (categoryParam) {
-      // Convert from url format to display format (e.g., deep-learning -> Deep Learning)
-      const displayCategory = categoryParam.split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-      
-      // Update the heading to show the category
-      const heading = document.querySelector('.directory-01__heading');
-      if (heading) {
-        heading.textContent = 'Explore ' + displayCategory + ' Libraries';
-      }
-      
-      // Update subtitle based on category
-      const subtitle = document.querySelector('.directory-01__subtitle');
-      if (subtitle) {
-        const categoryDescriptions = {
-          'deep-learning': 'Neural network frameworks for complex pattern recognition and feature learning. Used in image/speech recognition and autonomous systems.',
-          'web-scraping': 'Tools for extracting data from websites automatically. Used for data collection, monitoring, and automation.',
-          'data-manipulation': 'Libraries for cleaning, transforming, and processing data efficiently.',
-          'scientific-computing': 'Numerical and scientific computation tools for research and analysis.',
-          'machine-learning': 'Tools for building predictive models and statistical analysis.',
-          'natural-language-processing': 'Libraries for processing and analyzing human language data.',
-          'computer-vision': 'Tools for image and video analysis, recognition, and processing.',
-          'data-visualization': 'Libraries for creating interactive and informative visual representations of data.',
-          'statistical-analysis': 'Tools for statistical analysis, hypothesis testing, and data modeling.',
-          'machine-learning-gradient-boosting': 'Specialized algorithms for predictive modeling using gradient boosting techniques.',
-          'hyperparameter-optimization': 'Tools for automatically tuning machine learning model parameters.',
-          'neural-networks': 'Libraries focused on neural network architectures and training.',
-          'distributed-computing': 'Frameworks for running computations across multiple machines or processors.',
-          'big-data-processing': 'Tools designed for handling and processing large-scale datasets.',
-          'experiment-tracking': 'Libraries for tracking, comparing, and managing machine learning experiments.'
-        };
-        
-        if (categoryDescriptions[categoryParam]) {
-          subtitle.innerHTML = categoryDescriptions[categoryParam];
-        } else {
-          subtitle.innerHTML = 'Libraries for ' + displayCategory.toLowerCase() + ' in Python. Find the right tools for your AI project.';
-        }
-      }
-      
-      // Make sure the directory component knows we want to filter by this category
-      // This is a backup in case the main filtering doesn't work
-      setTimeout(function() {
-        // Clear loading state if still present
-        directory.classList.remove('dir-is-loading');
-        
-        // Force filtering after a delay
-        setTimeout(function() {
-          const directoryItems = document.querySelectorAll('.directory-item-parent');
-          const categoryLower = displayCategory.toLowerCase();
-          
-          directoryItems.forEach(item => {
-            try {
-              let itemFilters = '';
-              if (item.dataset.filters) {
-                itemFilters = item.dataset.filters.toLowerCase();
-              }
-              
-              const itemTitle = item.querySelector('.directory-01__title')?.textContent?.toLowerCase() || '';
-              const itemText = item.querySelector('.directory-01__text')?.textContent?.toLowerCase() || '';
-              
-              const matchesCategory = 
-                itemFilters.includes(categoryLower) || 
-                itemTitle.includes(categoryLower) || 
-                itemText.includes(categoryLower) ||
-                (categoryParam === 'web-scraping' && (
-                  itemText.includes('scraping') || 
-                  itemText.includes('web mining') || 
-                  itemText.includes('extraction')
-                ));
-              
-              item.style.display = matchesCategory ? 'block' : 'none';
-              
-            } catch (e) {
-              console.error('Error filtering item:', e);
-            }
-          });
-        }, 1500);
-        
-      }, 1000);
-    }
-  }
-});
-</script>
 
 </body>
 </html>
