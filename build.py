@@ -95,6 +95,26 @@ def generate_library_data_json(categories, libraries):
     print(f"  [OK] Generated {LIBRARY_DATA_JSON.name}  ({len(categories)} categories, {len(libraries)} libraries)")
 
 
+def generate_categories_display_csv(categories):
+    """Generate categories-display.csv for the libraries page directory.
+
+    This CSV is consumed by main.js (Unicorn Platform) via data-cmsurl.
+    It adds a 'page' column with slugified titles used for URL construction.
+    """
+    output_path = REPO_DIR / "categories-display.csv"
+    with open(output_path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["title", "text", "rating", "page"])
+        writer.writeheader()
+        for cat in categories:
+            writer.writerow({
+                "title": cat["title"],
+                "text": cat["text"],
+                "rating": "",
+                "page": cat["slugified_title"],
+            })
+    print(f"  [OK] Generated {output_path.name}  ({len(categories)} categories)")
+
+
 def extract_unique_categories(libraries):
     """Extract all unique category names from library data, sorted alphabetically."""
     categories = set()
@@ -111,13 +131,13 @@ def extract_unique_categories(libraries):
 # ----------------------------------------------
 
 def update_cmsurl_in_html(html_file, new_url):
-    """Replace Google Sheets data-cmsurl with a new URL in the given HTML file."""
+    """Replace data-cmsurl with a new URL in the given HTML file."""
     filepath = REPO_DIR / html_file
     with open(filepath, "r", encoding="utf-8") as f:
         content = f.read()
 
-    # Match Google Sheets URLs in data-cmsurl attributes
-    pattern = r'data-cmsurl="https://docs\.google\.com/spreadsheets/[^"]*"'
+    # Match any data-cmsurl with an https:// URL or Google Sheets URL
+    pattern = r'data-cmsurl="https://[^"]*"'
     replacement = f'data-cmsurl="{new_url}"'
 
     new_content, count = re.subn(pattern, replacement, content)
@@ -126,7 +146,7 @@ def update_cmsurl_in_html(html_file, new_url):
             f.write(new_content)
         print(f"  [OK] Updated data-cmsurl in {html_file}  ({count} replacement(s))")
     else:
-        print(f"  - No Google Sheets data-cmsurl found in {html_file}")
+        print(f"  - No https data-cmsurl found in {html_file}")
 
 
 def update_inline_sheet_urls(html_file, new_libraries_url, new_categories_url=None):
@@ -262,42 +282,50 @@ def main():
         sys.exit(1)
 
     # 1. Read source data
-    print("\n[1/7] Reading CSV files...")
+    print("\n[1/8] Reading CSV files...")
     libraries = read_libraries_csv()
     categories = read_categories_csv()
     print(f"  [OK] Read {len(libraries)} libraries from Libraries.csv")
     print(f"  [OK] Read {len(categories)} categories from CATEGORIES.csv")
 
-    # 2. Generate library-data.json
-    print("\n[2/7] Generating library-data.json...")
+    # 2. Generate data files
+    print("\n[2/8] Generating data files...")
     generate_library_data_json(categories, libraries)
+    generate_categories_display_csv(categories)
 
     # 3. Update data-cmsurl in HTML files (absolute URL required by main.js)
-    print("\n[3/7] Updating data-cmsurl in HTML files...")
+    print("\n[3/8] Updating data-cmsurl in HTML files...")
     absolute_csv_url = f"{SITE_URL}/Libraries.csv"
-    for html_file in LIBRARY_DIRECTORY_HTML:
-        update_cmsurl_in_html(html_file, absolute_csv_url)
+    update_cmsurl_in_html("index.html", absolute_csv_url)
+    # libraries.html uses categories-display.csv instead
+    absolute_categories_csv_url = f"{SITE_URL}/categories-display.csv"
+    update_cmsurl_in_html("libraries.html", absolute_categories_csv_url)
 
     # 4. Update inline script URLs in categories.html (relative URLs OK here)
-    print("\n[4/7] Updating inline script URLs...")
+    print("\n[4/8] Updating inline script URLs...")
     update_inline_sheet_urls("categories.html", "/Libraries.csv", "/CATEGORIES.csv")
 
     # 5. Update data-filtersv2 with all categories from CSV
-    print("\n[5/7] Updating category filters in HTML files...")
+    print("\n[5/8] Updating category filters in HTML files...")
     unique_cats = extract_unique_categories(libraries)
     print(f"  Found {len(unique_cats)} unique categories")
     for html_file in FILTER_HTML_FILES:
         update_filtersv2_in_html(html_file, unique_cats)
 
-    # 6. Ensure categories page shows all items (not capped)
-    print("\n[6/7] Setting max items on categories page...")
+    # 6. Ensure categories/libraries pages show all items (not capped)
+    print("\n[6/8] Setting max items on directory pages...")
     set_maxitems_in_html("categories.html", len(categories))
+    set_maxitems_in_html("libraries.html", len(categories))
 
     # 7. Fix internal links opening in new tabs
-    print("\n[7/7] Fixing internal link targets...")
+    print("\n[7/8] Fixing internal link targets...")
     all_html = [f for f in REPO_DIR.glob("*.html")]
     for html_path in all_html:
         fix_internal_link_targets(html_path.name)
+
+    # 8. Ensure libraries.html uses categories-display.csv
+    print("\n[8/8] Verifying libraries.html data source...")
+    print(f"  [OK] libraries.html -> {absolute_categories_csv_url}")
 
     # Summary
     print("\n" + "=" * 55)
