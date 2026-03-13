@@ -158,6 +158,48 @@ def update_inline_sheet_urls(html_file, new_libraries_url, new_categories_url=No
         print(f"  - No inline Google Sheets URLs found in {html_file}")
 
 
+def fix_internal_link_targets(html_file):
+    """Change target='_blank' to target='_self' for internal links (href starting with /)."""
+    filepath = REPO_DIR / html_file
+    with open(filepath, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Pattern 1: href="/..." target="_blank"
+    content, c1 = re.subn(
+        r'href="(/[^"]*)" target="_blank"',
+        r'href="\1" target="_self"',
+        content,
+    )
+    # Pattern 2: target="_blank" href="/..."
+    content, c2 = re.subn(
+        r'target="_blank" href="(/[^"]*)"',
+        r'target="_self" href="\1"',
+        content,
+    )
+    total = c1 + c2
+    if total > 0:
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"  [OK] Fixed {total} internal link target(s) in {html_file}")
+
+
+def set_maxitems_in_html(html_file, max_items):
+    """Update data-maxitems attribute in a directory component."""
+    filepath = REPO_DIR / html_file
+    with open(filepath, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    new_content, count = re.subn(
+        r'data-maxitems="\d+"',
+        f'data-maxitems="{max_items}"',
+        content,
+    )
+    if count > 0:
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(new_content)
+        print(f"  [OK] Set data-maxitems={max_items} in {html_file}")
+
+
 def update_filtersv2_in_html(html_file, categories):
     """Update the filters array inside data-filtersv2 attribute.
 
@@ -220,32 +262,42 @@ def main():
         sys.exit(1)
 
     # 1. Read source data
-    print("\n[1/5] Reading CSV files...")
+    print("\n[1/7] Reading CSV files...")
     libraries = read_libraries_csv()
     categories = read_categories_csv()
     print(f"  [OK] Read {len(libraries)} libraries from Libraries.csv")
     print(f"  [OK] Read {len(categories)} categories from CATEGORIES.csv")
 
     # 2. Generate library-data.json
-    print("\n[2/5] Generating library-data.json...")
+    print("\n[2/7] Generating library-data.json...")
     generate_library_data_json(categories, libraries)
 
     # 3. Update data-cmsurl in HTML files (absolute URL required by main.js)
-    print("\n[3/5] Updating data-cmsurl in HTML files...")
+    print("\n[3/7] Updating data-cmsurl in HTML files...")
     absolute_csv_url = f"{SITE_URL}/Libraries.csv"
     for html_file in LIBRARY_DIRECTORY_HTML:
         update_cmsurl_in_html(html_file, absolute_csv_url)
 
     # 4. Update inline script URLs in categories.html (relative URLs OK here)
-    print("\n[4/5] Updating inline script URLs...")
+    print("\n[4/7] Updating inline script URLs...")
     update_inline_sheet_urls("categories.html", "/Libraries.csv", "/CATEGORIES.csv")
 
     # 5. Update data-filtersv2 with all categories from CSV
-    print("\n[5/5] Updating category filters in HTML files...")
+    print("\n[5/7] Updating category filters in HTML files...")
     unique_cats = extract_unique_categories(libraries)
     print(f"  Found {len(unique_cats)} unique categories")
     for html_file in FILTER_HTML_FILES:
         update_filtersv2_in_html(html_file, unique_cats)
+
+    # 6. Ensure categories page shows all items (not capped)
+    print("\n[6/7] Setting max items on categories page...")
+    set_maxitems_in_html("categories.html", len(categories))
+
+    # 7. Fix internal links opening in new tabs
+    print("\n[7/7] Fixing internal link targets...")
+    all_html = [f for f in REPO_DIR.glob("*.html")]
+    for html_path in all_html:
+        fix_internal_link_targets(html_path.name)
 
     # Summary
     print("\n" + "=" * 55)
