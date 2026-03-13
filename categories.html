@@ -1943,69 +1943,59 @@ document.addEventListener('DOMContentLoaded', function() {
   async function loadCategoryItems() {
     const categorySlug = getCategoryFromUrl();
     if (!categorySlug) return;
-    
+
     const categoryName = formatCategoryName(categorySlug);
     console.log('Loading category:', categoryName);
-    
+
     try {
       // Update heading
       const heading = document.querySelector('.directory-01__heading');
       if (heading) {
         heading.textContent = 'Explore ' + categoryName + ' Libraries';
       }
-      
+
       // Update subtitle
       const subtitle = document.querySelector('.directory-01__subtitle');
       if (subtitle) {
         subtitle.textContent = `Libraries for ${categoryName.toLowerCase()} in Python. Find the right tools for your AI project.`;
       }
-      
-      // Fetch items data
-      const response = await fetch(ITEMS_SHEET_URL);
-      const csvText = await response.text();
-      
-      // Simple CSV parsing
-      const lines = csvText.split('\n');
-      const headers = lines[0].split(',');
-      
-      // Parse items
-      const items = [];
-      for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',');
-        const item = {};
-        
-        headers.forEach((header, index) => {
-          item[header.toLowerCase().trim()] = values[index] || '';
-        });
-        
-        items.push(item);
-      }
-      
+
+      // Fetch library data from JSON (avoids CSV parsing issues with commas in fields)
+      const response = await fetch('/library-data.json');
+      const data = await response.json();
+      const items = data.libraries || [];
+
       // Filter by category
       const filteredItems = items.filter(item => {
         if (!item.category) return false;
-        
+
         const itemCategories = item.category.toLowerCase();
         const searchCategory = categoryName.toLowerCase();
-        
+
         return itemCategories.includes(searchCategory);
       });
-      
-      console.log(`Found ${filteredItems.length} matching items`);
-      
+
+      console.log(`Found ${filteredItems.length} matching items for "${categoryName}"`);
+
+      // Update search placeholder with count
+      const searchInput = document.querySelector('.directory-01__search-input');
+      if (searchInput) {
+        searchInput.setAttribute('placeholder', `Search among ${filteredItems.length} items`);
+      }
+
       // Display items
       const itemsList = document.querySelector('.directory-01__items');
       if (itemsList) {
         itemsList.innerHTML = '';
-        
+
         if (filteredItems.length > 0) {
           filteredItems.forEach(item => {
             const li = document.createElement('li');
             li.className = 'directory-item-parent';
-            
+
             li.innerHTML = `
               <div class="directory-01__item card-container sc-br-0_5">
-                <a target="_blank" href="https://aipythonlibraries.com/tools/${item.page || item.title.toLowerCase()}">
+                <a target="_blank" href="${item.url || '#'}">
                   <div class="directory-01__title-box">
                     <h3 class="title-text--inner directory-01__title def-16">${item.title || ''}</h3>
                     <div class="directory-01__rating">
@@ -2021,23 +2011,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 </a>
               </div>
             `;
-            
+
             itemsList.appendChild(li);
           });
         } else {
           itemsList.innerHTML = '<li style="text-align: center; padding: 20px;">No libraries found for this category.</li>';
         }
       }
-      
+
       // Remove loading state
       const directory = document.querySelector('.directory-01');
       if (directory) {
         directory.classList.remove('dir-is-loading');
       }
-      
+
     } catch (error) {
       console.error('Error loading data:', error);
-      
+
       // Show error message
       const itemsList = document.querySelector('.directory-01__items');
       if (itemsList) {
@@ -2045,7 +2035,7 @@ document.addEventListener('DOMContentLoaded', function() {
           Error loading data. Please try again later.
         </li>`;
       }
-      
+
       // Remove loading state
       const directory = document.querySelector('.directory-01');
       if (directory) {
