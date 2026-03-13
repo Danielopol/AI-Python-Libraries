@@ -33,37 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
       .trim();
   }
 
-  // Check if an item belongs to a category
+  // Check if an item belongs to a category (exact match per semicolon-separated value)
   function itemMatchesCategory(item, categoryName) {
     if (!item.category) return false;
 
     const normalizedItemCategories = item.category.split(';').map(c => normalizeCategory(c));
     const normalizedCategory = normalizeCategory(categoryName);
 
-    // Direct category match
-    const directMatch = normalizedItemCategories.some(cat =>
-      cat === normalizedCategory ||
-      cat.includes(normalizedCategory) ||
-      normalizedCategory.includes(cat)
-    );
-
-    if (directMatch) return true;
-
-    // Special cases handling
-    const categoryLower = categoryName.toLowerCase();
-    if (categoryLower === 'chatbots' &&
-        (item.category.toLowerCase().includes('chatbot') ||
-        item.category.toLowerCase().includes('natural language'))) {
-      return true;
-    }
-
-    if (categoryLower === 'web scraping' &&
-        (item.category.toLowerCase().includes('scraping') ||
-        item.category.toLowerCase().includes('extraction'))) {
-      return true;
-    }
-
-    return false;
+    return normalizedItemCategories.some(cat => cat === normalizedCategory);
   }
 
   // Main loader function
