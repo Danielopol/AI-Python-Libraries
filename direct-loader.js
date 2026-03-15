@@ -109,10 +109,15 @@ document.addEventListener('DOMContentLoaded', function() {
             itemElement.className = 'directory-item-parent';
             itemElement.dataset.filters = JSON.stringify({category: item.category || ''});
 
+            const logoHtml = item.logoUrl
+              ? `<img loading="lazy" class="directory-01__logo" src="${item.logoUrl}" alt="${item.title} logo"/>`
+              : '';
+
             itemElement.innerHTML = `
               <div class="directory-01__item card-container sc-br-0_5">
                 <a target="_blank" href="${item.url || '#'}">
                   <div class="directory-01__title-box">
+                    ${logoHtml}
                     <h3 class="title-text--inner directory-01__title def-16">${item.title || ''}</h3>
                     <div class="directory-01__rating">
                       <span class="directory-01__rating-text content-text def-14">${item.rank || ''}</span>

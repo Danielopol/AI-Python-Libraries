@@ -56,6 +56,8 @@ def read_libraries_csv():
                 "url": row.get("url", "").strip(),
                 "rank": row.get("Rank", "").strip(),
                 "page": row.get("page", "").strip(),
+                "logoUrl": row.get("logoUrl", "").strip(),
+                "imgUrl": row.get("imgUrl", "").strip(),
             }
             libraries.append(lib)
     return libraries
