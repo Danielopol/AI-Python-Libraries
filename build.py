@@ -205,6 +205,26 @@ def fix_internal_link_targets(html_file):
         print(f"  [OK] Fixed {total} internal link target(s) in {html_file}")
 
 
+def ensure_mobile_css_link(html_file):
+    """Ensure mobile-fixes.css link is present after main.css link."""
+    filepath = REPO_DIR / html_file
+    with open(filepath, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    if "mobile-fixes.css" in content:
+        return  # Already present
+
+    new_content, count = re.subn(
+        r'(<link rel="stylesheet" href="/exported_website/static/css/main\.css">)',
+        r'\1\n    <link rel="stylesheet" href="/mobile-fixes.css">',
+        content,
+    )
+    if count > 0:
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(new_content)
+        print(f"  [OK] Added mobile-fixes.css link to {html_file}")
+
+
 def set_maxitems_in_html(html_file, max_items):
     """Update data-maxitems attribute in a directory component."""
     filepath = REPO_DIR / html_file
@@ -284,19 +304,19 @@ def main():
         sys.exit(1)
 
     # 1. Read source data
-    print("\n[1/8] Reading CSV files...")
+    print("\n[1/9] Reading CSV files...")
     libraries = read_libraries_csv()
     categories = read_categories_csv()
     print(f"  [OK] Read {len(libraries)} libraries from Libraries.csv")
     print(f"  [OK] Read {len(categories)} categories from CATEGORIES.csv")
 
     # 2. Generate data files
-    print("\n[2/8] Generating data files...")
+    print("\n[2/9] Generating data files...")
     generate_library_data_json(categories, libraries)
     generate_categories_display_csv(categories)
 
     # 3. Update data-cmsurl in HTML files (absolute URL required by main.js)
-    print("\n[3/8] Updating data-cmsurl in HTML files...")
+    print("\n[3/9] Updating data-cmsurl in HTML files...")
     absolute_csv_url = f"{SITE_URL}/Libraries.csv"
     update_cmsurl_in_html("index.html", absolute_csv_url)
     # libraries.html uses categories-display.csv instead
@@ -304,29 +324,34 @@ def main():
     update_cmsurl_in_html("libraries.html", absolute_categories_csv_url)
 
     # 4. Update inline script URLs in categories.html (relative URLs OK here)
-    print("\n[4/8] Updating inline script URLs...")
+    print("\n[4/9] Updating inline script URLs...")
     update_inline_sheet_urls("categories.html", "/Libraries.csv", "/CATEGORIES.csv")
 
     # 5. Update data-filtersv2 with all categories from CSV
-    print("\n[5/8] Updating category filters in HTML files...")
+    print("\n[5/9] Updating category filters in HTML files...")
     unique_cats = extract_unique_categories(libraries)
     print(f"  Found {len(unique_cats)} unique categories")
     for html_file in FILTER_HTML_FILES:
         update_filtersv2_in_html(html_file, unique_cats)
 
     # 6. Ensure categories/libraries pages show all items (not capped)
-    print("\n[6/8] Setting max items on directory pages...")
+    print("\n[6/9] Setting max items on directory pages...")
     set_maxitems_in_html("categories.html", len(categories))
     set_maxitems_in_html("libraries.html", len(categories))
 
     # 7. Fix internal links opening in new tabs
-    print("\n[7/8] Fixing internal link targets...")
+    print("\n[7/9] Fixing internal link targets...")
     all_html = [f for f in REPO_DIR.glob("*.html")]
     for html_path in all_html:
         fix_internal_link_targets(html_path.name)
 
-    # 8. Ensure libraries.html uses categories-display.csv
-    print("\n[8/8] Verifying libraries.html data source...")
+    # 8. Ensure mobile CSS is linked in all HTML files
+    print("\n[8/9] Ensuring mobile-fixes.css is linked...")
+    for html_path in all_html:
+        ensure_mobile_css_link(html_path.name)
+
+    # 9. Ensure libraries.html uses categories-display.csv
+    print("\n[9/9] Verifying libraries.html data source...")
     print(f"  [OK] libraries.html -> {absolute_categories_csv_url}")
 
     # Summary

@@ -1,0 +1,90 @@
+/* ==============================================
+   Mobile Responsiveness Fixes
+   Overrides for Unicorn Platform's exported CSS
+   ============================================== */
+
+/* Prevent horizontal overflow on all screen sizes */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure all images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---- Mobile (≤900px) ---- */
+@media (max-width: 900px) {
+
+  /* Show the hamburger menu button (missing from exported CSS) */
+  .nav-02__burger {
+    display: block !important;
+  }
+
+  /* Ensure nav container doesn't overflow */
+  .nav-02__box {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+
+  /* Keep logo text from pushing nav too wide */
+  .nav-02__logo_text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 50vw;
+    display: inline-block;
+  }
+
+  /* Ensure directory section doesn't overflow */
+  .directory-01 {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* Make search input fit mobile */
+  .directory-01__search-input {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Ensure filter tags wrap properly */
+  .directory-01__tags-box {
+    flex-wrap: wrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  /* Make buttons stack on mobile */
+  .buttons-set__list {
+    flex-wrap: wrap;
+  }
+
+  .buttons-set__item {
+    margin-bottom: 8px;
+  }
+}
+
+/* ---- Small mobile (≤500px) ---- */
+@media (max-width: 500px) {
+
+  /* Shorter logo text on very small screens */
+  .nav-02__logo_text {
+    max-width: 180px;
+    font-size: 12px;
+  }
+
+  /* Ensure cards don't overflow */
+  .directory-01__item {
+    word-break: break-word;
+  }
+
+  /* Compact section padding */
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
